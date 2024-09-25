@@ -1,0 +1,155 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(uuid())
+  name         String
+  email        String     @unique()
+  avatarUrl    String     @default("") @map("avatar_url")
+  passwordHash String     @map("password_hash")
+  gender       Gender
+  birthday     DateTime?
+  description  String
+  subway       Subway
+  imageUrl     String     @map("image_url")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  interview    Interview?
+  balance      Balance[]
+  review       Review[]
+  order        Order[]
+
+  @@map("users")
+}
+
+enum Gender {
+  Male
+  Female
+  Whatever
+}
+
+enum Subway {
+  Pionerskaya
+  Petrogradskaya
+  Udelnaya
+  Zvezdnaya
+  Sportivnaya
+}
+
+model Interview {
+  id             String  @id @default(uuid())
+  userId         String  @unique() @map("user_id")
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  level          Level
+  workoutTypes   Type[]  @map("workout_types")
+  workoutTime    Time    @map("workout_time")
+  caloriesAmount Int     @map("calories_amount")
+  caloriesDay    Int     @map("calories_day")
+  isReady        Boolean @map("is_ready")
+
+  @@map("interviews")
+}
+
+enum Level {
+  Beginner
+  Amateur
+  Professional
+}
+
+enum Type {
+  Yoga
+  Running
+  Boxing
+  Stretching
+  Crossfit
+  Aerobics
+  Pilates
+}
+
+enum Time {
+  Short
+  Medium
+  Long
+  VeryLong
+}
+
+model Workout {
+  id          String    @id @default(uuid())
+  name        String
+  imageUrl    String    @map("image_url")
+  level       Level
+  type        Type
+  duration    Time
+  price       Int
+  calories    Int
+  description String
+  gender      Gender
+  videoUrl    String    @map("video_url")
+  coach       String
+  isSpecial   Boolean   @map("is_special")
+  balance     Balance[]
+  review      Review[]
+  order       Order[]
+
+  @@map("workouts")
+}
+
+model Balance {
+  id        String  @id @default(uuid())
+  userId    String  @map("user_id")
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  workoutId String  @map("workout_id")
+  workout   Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  count     Int
+
+  @@map("balances")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  workoutId String   @map("workout_id")
+  workout   Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  rating    Int
+  text      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("reviews")
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  orderType Purchase @map("order_type")
+  serviceId String   @map("service_id")
+  workout   Workout  @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  count     Int
+  price     Int
+  createdAt DateTime @default(now()) @map("created_at")
+  payment   Payment
+
+  @@map("orders")
+}
+
+enum Purchase {
+  Subscription
+}
+
+enum Payment {
+  Visa
+  Mir
+  Umoney
+}
