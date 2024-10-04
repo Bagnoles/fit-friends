@@ -29,6 +29,7 @@ model User {
   balance      Balance[]
   review       Review[]
   order        Order[]
+  token        RefreshSession?
 
   @@map("users")
 }
@@ -152,4 +153,15 @@ enum Payment {
   Visa
   Mir
   Umoney
+}
+
+model RefreshSession {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id") @unique()
+  tokenId   String   @map("token_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  expiresIn DateTime @map("expires_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("refresh_sessions")
 }
