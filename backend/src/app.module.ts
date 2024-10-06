@@ -5,12 +5,16 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import jwtConfig from './shared/config/jwt.config';
 import applicationConfig from './shared/config/app.config';
+import { BalanceModule } from './balance/balance.module';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
     AuthModule,
     WorkoutModule,
     UserModule,
+    BalanceModule,
+    ReviewModule,
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,

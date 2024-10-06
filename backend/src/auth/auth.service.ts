@@ -19,6 +19,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { Token } from 'src/shared/types/token.interface';
 import { User } from 'src/shared/types/user.interface';
 import { createJWTPayload } from 'src/shared/utils/jwt';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -99,5 +100,15 @@ export class AuthService {
     }
 
     return existUser;
+  }
+
+  public async updateProfile(id: string, dto: UpdateUserDto) {
+    const user = await this.userRepository.findById(id);
+    if (!user) {
+      throw new NotFoundException(`Пользователь с ID ${id} не найден`);
+    }
+    const updatedUser = new UserEntity({ ...user, ...dto, id });
+    await this.userRepository.update(updatedUser);
+    return updatedUser;
   }
 }

@@ -45,4 +45,15 @@ export class UserRepository extends BasePostgresRepository<UserEntity, User> {
     });
     return this.createEntityFromDocument(document as User);
   }
+
+  public async update(entity: UserEntity) {
+    const pojoEntity = entity.toPOJO();
+    const document = await this.client.user.update({
+      where: {
+        id: entity.id,
+      },
+      data: pojoEntity,
+    });
+    return this.createEntityFromDocument(document as User);
+  }
 }

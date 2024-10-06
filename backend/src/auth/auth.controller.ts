@@ -6,6 +6,8 @@ import {
   UseGuards,
   Req,
   HttpCode,
+  Patch,
+  Param,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,6 +19,7 @@ import { TokenPayload } from 'src/shared/types/token-payload.interface';
 import { fillDto } from 'src/shared/utils/common';
 import { UserRdo } from './rdo/user.rdo';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 interface RequestWithUser {
   user?: UserEntity;
@@ -53,5 +56,11 @@ export class AuthController {
   @Post('check')
   public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
     return payload;
+  }
+
+  @Patch('/:userId')
+  public async update(@Param('userId') id: string, @Body() dto: UpdateUserDto) {
+    const updatedUser = await this.authService.updateProfile(id, dto);
+    return fillDto(UserRdo, updatedUser.toPOJO());
   }
 }
