@@ -107,13 +107,13 @@ model Workout {
 }
 
 model Balance {
-  id        String  @id @default(uuid())
   userId    String  @map("user_id")
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   workoutId String  @map("workout_id")
   workout   Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   count     Int
 
+  @@id([userId, workoutId])
   @@map("balances")
 }
 
