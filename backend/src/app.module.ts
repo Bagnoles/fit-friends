@@ -8,6 +8,7 @@ import applicationConfig from './shared/config/app.config';
 import { BalanceModule } from './balance/balance.module';
 import { ReviewModule } from './review/review.module';
 import { OrderModule } from './order/order.module';
+import { InterviewModule } from './interview/interview.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { OrderModule } from './order/order.module';
     BalanceModule,
     ReviewModule,
     OrderModule,
+    InterviewModule,
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
