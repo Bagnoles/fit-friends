@@ -4,6 +4,7 @@ module.exports = {
   env: { browser: true, es2022: true },
   extends: [
     'eslint:recommended',
+    '@typescript-eslint/parser',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
     "htmlacademy/react-typescript",
