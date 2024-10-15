@@ -111,4 +111,14 @@ export class AuthService {
     await this.userRepository.update(updatedUser);
     return updatedUser;
   }
+
+  public async getUserById(id: string) {
+    const existUser = await this.userRepository.findById(id);
+
+    if (!existUser) {
+      throw new NotFoundException(`Пользователь с Id ${id} не найден`);
+    }
+
+    return existUser;
+  }
 }

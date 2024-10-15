@@ -1,7 +1,74 @@
+import { useRef, useState } from 'react';
 import Logo from '../../components/logo/logo';
+import Input from '../../components/input/input';
+import { useAppDispatch } from '../../store/hooks';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '../../const';
+import { registerAction } from '../../store/api-actions';
+import { Gender } from '../../types/gender.enum';
+import Radio from '../../components/radio/radio';
+import { LOCATION_NAMES, Subway } from '../../types/subway.enum';
 
 
 function Register():JSX.Element {
+  const [name, setName] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [birthday, setBirthday] = useState<string>('');
+  const [gender, setGender] = useState<Gender>(Gender.Whatever);
+  const [location, setLocation] = useState<Subway | null>(null);
+
+  const selectRef = useRef<HTMLDivElement | null>(null);
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleNameChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setName(evt.target.value);
+  };
+  const handleEmailChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(evt.target.value);
+  };
+  const handlePasswordChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(evt.target.value);
+  };
+  const handleBirthdayChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setBirthday(evt.target.value);
+  };
+  const handleGenderChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setGender(evt.target.value as Gender);
+  };
+
+  const handleSelectButtonClick = () => {
+    selectRef.current?.classList.add('is-open');
+  }
+  const handleSelectItemClick = (evt: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    selectRef.current?.classList.remove('is-open');
+    setLocation(evt.currentTarget.dataset.value as Subway);
+    selectRef.current?.classList.add('not-empty');
+  }
+
+  const handleSubmitRegisterForm = (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    const newUser = {
+      name,
+      password,
+      email,
+      birthday: birthday === '' ? undefined : new Date(birthday) ,
+      gender,
+      subway: location as Subway,
+      avatarUrl: 'img/content/user-photo-2.png',
+      imageUrl: 'img/content/user-photo-2.png',
+      description: 'lorem ipsum lorem ipsum lorem ipsum',
+    }
+    dispatch(registerAction(newUser))
+      .then((response) => {
+        if (response.meta.requestStatus === 'fulfilled') {
+          navigate(AppRoutes.Interview);
+        }
+      })
+  };
+
   return (
     <div className="wrapper">
       <main>
@@ -13,7 +80,7 @@ function Register():JSX.Element {
                 <h1 className="popup-form__title">Регистрация</h1>
               </div>
               <div className="popup-form__form">
-                <form method="get">
+                <form method="get" onSubmit={handleSubmitRegisterForm}>
                   <div className="sign-up">
                     <div className="sign-up__load-photo">
                       <div className="input-load-avatar">
@@ -29,51 +96,34 @@ function Register():JSX.Element {
                       </div>
                     </div>
                     <div className="sign-up__data">
-                      <div className="custom-input">
-                        <label><span className="custom-input__label">Имя</span><span className="custom-input__wrapper">
-                            <input type="text" name="name"/></span>
-                        </label>
-                      </div>
-                      <div className="custom-input">
-                        <label><span className="custom-input__label">E-mail</span><span className="custom-input__wrapper">
-                            <input type="email" name="email"/></span>
-                        </label>
-                      </div>
-                      <div className="custom-input">
-                        <label><span className="custom-input__label">Дата рождения</span><span className="custom-input__wrapper">
-                            <input type="date" name="birthday" max="2099-12-31"/></span>
-                        </label>
-                      </div>
-                      <div className="custom-select custom-select--not-selected"><span className="custom-select__label">Ваша локация</span>
-                        <button className="custom-select__button" type="button" aria-label="Выберите одну из опций"><span className="custom-select__text"></span><span className="custom-select__icon">
+                      <Input name='name' text='Имя' type='text' value={name} onChange={handleNameChange} />
+                      <Input name='email' text='E-mail' type='email' value={email} onChange={handleEmailChange} />
+                      <Input name='birthday' text='Дата рождения' type='date' value={birthday} onChange={handleBirthdayChange} />
+                      <div className="custom-select custom-select--not-selected" ref={selectRef}>
+                        <span className="custom-select__label">Ваша локация</span>
+                        <button className="custom-select__button" type="button" aria-label="Выберите одну из опций" onClick={handleSelectButtonClick}>
+                          <span className="custom-select__text">{location}</span>
+                          <span className="custom-select__icon">
                             <svg width="15" height="6" aria-hidden="true">
                               <use xlinkHref="#arrow-down"></use>
-                            </svg></span></button>
+                            </svg>
+                          </span>
+                        </button>
                         <ul className="custom-select__list" role="listbox">
+                          {Object.values(Subway).map((item) => <li className='custom-select__item' data-value={item} key={item} onClick={handleSelectItemClick}>{LOCATION_NAMES[item]}</li>)}
                         </ul>
                       </div>
-                      <div className="custom-input">
-                        <label><span className="custom-input__label">Пароль</span><span className="custom-input__wrapper">
-                            <input type="password" name="password" autoComplete="off"/></span>
-                        </label>
-                      </div>
+                      <Input name='password' text='Пароль' type='password' value={password} onChange={handlePasswordChange} />
                       <div className="sign-up__radio"><span className="sign-up__label">Пол</span>
                         <div className="custom-toggle-radio custom-toggle-radio--big">
-                          <div className="custom-toggle-radio__block">
-                            <label>
-                              <input type="radio" name="sex"/><span className="custom-toggle-radio__icon"></span><span className="custom-toggle-radio__label">Мужской</span>
-                            </label>
-                          </div>
-                          <div className="custom-toggle-radio__block">
-                            <label>
-                              <input type="radio" name="sex" checked/><span className="custom-toggle-radio__icon"></span><span className="custom-toggle-radio__label">Женский</span>
-                            </label>
-                          </div>
-                          <div className="custom-toggle-radio__block">
-                            <label>
-                              <input type="radio" name="sex"/><span className="custom-toggle-radio__icon"></span><span className="custom-toggle-radio__label">Неважно</span>
-                            </label>
-                          </div>
+                          {Object.values(Gender).map((item) => <Radio
+                            currentValue={gender}
+                            value={item}
+                            text={item === Gender.Male ? 'Мужской' : item === Gender.Female ? 'Женский' : 'Неважно'}
+                            onChange={handleGenderChange}
+                            key={item}
+                            name='sex'
+                          />)}
                         </div>
                       </div>
                     </div>
@@ -82,7 +132,7 @@ function Register():JSX.Element {
                       <div className="role-selector sign-up__role-selector">
                         <div className="role-btn">
                           <label>
-                            <input className="visually-hidden" type="radio" name="role" value="coach" checked/><span className="role-btn__icon">
+                            <input className="visually-hidden" type="radio" name="role" value="coach" /><span className="role-btn__icon">
                               <svg width="12" height="13" aria-hidden="true">
                                 <use xlinkHref="#icon-cup"></use>
                               </svg></span><span className="role-btn__btn">Я хочу тренировать</span>
@@ -90,7 +140,7 @@ function Register():JSX.Element {
                         </div>
                         <div className="role-btn">
                           <label>
-                            <input className="visually-hidden" type="radio" name="role" value="sportsman"/><span className="role-btn__icon">
+                            <input className="visually-hidden" type="radio" name="role" value="sportsman" checked/><span className="role-btn__icon">
                               <svg width="12" height="13" aria-hidden="true">
                                 <use xlinkHref="#icon-weight"></use>
                               </svg></span><span className="role-btn__btn">Я хочу тренироваться</span>

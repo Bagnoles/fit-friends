@@ -5,6 +5,7 @@ import NotFound from '../../pages/not-found/not-found';
 import Login from '../../pages/login/login';
 import Register from '../../pages/register/register';
 import Interview from '../../pages/interview/interview';
+import Main from '../../pages/main/main';
 
 function App():JSX.Element {
   return (
@@ -13,6 +14,7 @@ function App():JSX.Element {
       <Route path={AppRoutes.Login} element={<Login />} />
       <Route path={AppRoutes.Register} element={<Register />} />
       <Route path={AppRoutes.Interview} element={<Interview />} />
+      <Route path={AppRoutes.Main} element={<Main />} />
       <Route path='*' element={<NotFound />} />
     </Routes>
   )

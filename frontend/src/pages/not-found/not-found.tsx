@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import { AppRoutes } from '../../const';
+
 function NotFound():JSX.Element {
   return (
     <div className="wrapper">
@@ -18,7 +21,7 @@ function NotFound():JSX.Element {
               </picture>
             </div>
             <div className="intro__buttons">
-              <p className="intro__text">Страница не найдена <a className="intro__link" href="#">Вернуться на главную</a>
+              <p className="intro__text">Страница не найдена <Link className="intro__link" to={AppRoutes.Main}>Вернуться на главную</Link>
               </p>
             </div>
           </div>

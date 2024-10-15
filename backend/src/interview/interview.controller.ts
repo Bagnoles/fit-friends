@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  UseInterceptors,
-} from '@nestjs/common';
-import { InjectUserIdInterceptor } from 'src/shared/interceptors/inject-user-id.interceptor';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InterviewService } from './interview.service';
 import { CreateInterviewDto } from './dto/create-interview.dto';
 
@@ -20,7 +12,7 @@ export class InterviewController {
     return result;
   }
 
-  @UseInterceptors(InjectUserIdInterceptor)
+  //@UseInterceptors(InjectUserIdInterceptor)
   @Post('/')
   public async create(@Body() dto: CreateInterviewDto) {
     const result = await this.interviewService.saveInterview(dto);
