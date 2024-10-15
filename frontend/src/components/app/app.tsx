@@ -6,6 +6,8 @@ import Login from '../../pages/login/login';
 import Register from '../../pages/register/register';
 import Interview from '../../pages/interview/interview';
 import Main from '../../pages/main/main';
+import Workout from '../../pages/workout/workout';
+import Catalog from '../../pages/catalog/catalog';
 
 function App():JSX.Element {
   return (
@@ -15,6 +17,8 @@ function App():JSX.Element {
       <Route path={AppRoutes.Register} element={<Register />} />
       <Route path={AppRoutes.Interview} element={<Interview />} />
       <Route path={AppRoutes.Main} element={<Main />} />
+      <Route path={AppRoutes.Workout} element={<Catalog />} />
+      <Route path={`${AppRoutes.Workout}/:id`} element={<Workout />} />
       <Route path='*' element={<NotFound />} />
     </Routes>
   )

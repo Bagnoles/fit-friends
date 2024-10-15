@@ -5,10 +5,13 @@ import App from './components/app/app';
 import { store } from './store';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import { fetchWorkouts } from './store/api-actions';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+store.dispatch(fetchWorkouts());
 
 root.render(
   <React.StrictMode>
