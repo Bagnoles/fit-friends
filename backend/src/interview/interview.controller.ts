@@ -12,7 +12,6 @@ export class InterviewController {
     return result;
   }
 
-  //@UseInterceptors(InjectUserIdInterceptor)
   @Post('/')
   public async create(@Body() dto: CreateInterviewDto) {
     const result = await this.interviewService.saveInterview(dto);

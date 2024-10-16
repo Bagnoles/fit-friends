@@ -7,7 +7,6 @@ type SpecialItemProps = {
 }
 
 function SpecialItem({workout}: SpecialItemProps):JSX.Element {
-  console.log(workout);
   return (
     <li className="special-for-you__item">
       <div className="thumbnail-preview">

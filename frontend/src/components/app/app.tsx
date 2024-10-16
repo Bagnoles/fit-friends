@@ -8,20 +8,24 @@ import Interview from '../../pages/interview/interview';
 import Main from '../../pages/main/main';
 import Workout from '../../pages/workout/workout';
 import Catalog from '../../pages/catalog/catalog';
+import Profile from '../../pages/profile/profile';
+import PrivateRoute from '../private-route/private-route';
 
 function App():JSX.Element {
   return (
     <Routes>
-      <Route path={AppRoutes.Intro} element={<Intro />} />
-      <Route path={AppRoutes.Login} element={<Login />} />
-      <Route path={AppRoutes.Register} element={<Register />} />
+      <Route path={AppRoutes.Intro} element={<PrivateRoute isReverse><Intro /></PrivateRoute>} />
+      <Route path={AppRoutes.Login} element={<PrivateRoute isReverse><Login /></PrivateRoute>} />
+      <Route path={AppRoutes.Register} element={<PrivateRoute isReverse><Register /></PrivateRoute>} />
       <Route path={AppRoutes.Interview} element={<Interview />} />
-      <Route path={AppRoutes.Main} element={<Main />} />
-      <Route path={AppRoutes.Workout} element={<Catalog />} />
-      <Route path={`${AppRoutes.Workout}/:id`} element={<Workout />} />
+      <Route path={AppRoutes.Profile} element={<PrivateRoute><Profile /></PrivateRoute>} />
+      <Route path={AppRoutes.Main} element={<PrivateRoute><Main /></PrivateRoute>} />
+      <Route path={AppRoutes.Workout} element={<PrivateRoute><Catalog /></PrivateRoute>} />
+      <Route path={`${AppRoutes.Workout}/:id`} element={<PrivateRoute><Workout /></PrivateRoute>} />
       <Route path='*' element={<NotFound />} />
     </Routes>
   )
 }
 
 export default App;
+//<PrivateRoute isReverse><LoginScreen /></PrivateRoute>

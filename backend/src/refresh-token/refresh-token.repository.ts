@@ -39,6 +39,12 @@ export class RefreshTokenRepository extends BasePostgresRepository<
     });
   }
 
+  public async deleteExpiredTokens(): Promise<void> {
+    this.client.refreshSession.deleteMany({
+      where: { expiresIn: { lt: new Date() } },
+    });
+  }
+
   public async saveRefreshSession(entity: RefreshTokenEntity) {
     const pojoEntity = entity.toPOJO();
     const document = await this.client.refreshSession.create({

@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
 import { StatusCodes } from 'http-status-codes';
-import { getToken } from './token';
+import { getAccessToken, getRefreshToken } from './token';
 
 type ErrorMessageType = {
   type: string;
@@ -27,7 +27,7 @@ export const createAPI = (): AxiosInstance => {
 
   api.interceptors.request.use(
     (config: AxiosRequestConfig) => {
-      const token = getToken();
+      const token = config.url?.includes('refresh') ? getRefreshToken() : getAccessToken();
 
       if (token && config.headers) {
         config.headers['authorization'] = `Bearer ${token}`;

@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { State, store } from '.';
 import { CreateUserDto, LoginUserDto, UserInfo, UserTokens } from '../types/user.type';
 import { APIRoute } from '../const';
-import { saveToken } from '../services/token';
+import { saveTokens } from '../services/token';
 import { Interview } from '../types/interview.type';
 import { Workout } from '../types/workout.type';
 
@@ -23,7 +23,7 @@ export const registerAction = createAppAsyncThunk<UserInfo, CreateUserDto>('user
 export const loginAction = createAppAsyncThunk<UserTokens, LoginUserDto>('user/login',
   async ({email, password}, {extra: api}) => {
     const {data} = await api.post<UserTokens>(`${APIRoute.User}/login`, {email, password});
-    saveToken(data.refreshToken);
+    saveTokens(data.accessToken, data.refreshToken);
     return data;
   }
 );
@@ -31,6 +31,22 @@ export const loginAction = createAppAsyncThunk<UserTokens, LoginUserDto>('user/l
 export const addInterview = createAppAsyncThunk<UserInfo, Interview>('user/interview',
   async (dto, {extra: api}) => {
     const {data} = await api.post<UserInfo>(APIRoute.Interview, dto);
+    return data;
+  }
+);
+
+export const checkAuthorization = createAppAsyncThunk<UserInfo, undefined>('user/check',
+  async (_arg, {extra: api}) => {
+    const {data: dataWithId} = await api.post<{id: string}>(`${APIRoute.User}/check`);
+    const {data} = await api.get<UserInfo>(`${APIRoute.User}/${dataWithId.id}`);
+    return data;
+  }
+);
+
+export const refreshTokens = createAppAsyncThunk<{accessToken: string, refreshToken: string}, undefined>('user/refresh',
+  async (_arg, {extra: api}) => {
+    const {data} = await api.post<{accessToken: string, refreshToken: string}>(`${APIRoute.User}/refresh`);
+    saveTokens(data.accessToken, data.refreshToken);
     return data;
   }
 );

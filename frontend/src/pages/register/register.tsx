@@ -4,7 +4,7 @@ import Input from '../../components/input/input';
 import { useAppDispatch } from '../../store/hooks';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../const';
-import { registerAction } from '../../store/api-actions';
+import { loginAction, registerAction } from '../../store/api-actions';
 import { Gender } from '../../types/gender.enum';
 import Radio from '../../components/radio/radio';
 import { LOCATION_NAMES, Subway } from '../../types/subway.enum';
@@ -64,6 +64,7 @@ function Register():JSX.Element {
     dispatch(registerAction(newUser))
       .then((response) => {
         if (response.meta.requestStatus === 'fulfilled') {
+          dispatch(loginAction({email, password}));
           navigate(AppRoutes.Interview);
         }
       })

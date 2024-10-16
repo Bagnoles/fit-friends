@@ -2,15 +2,22 @@ const AUTH_TOKEN_NAME = 'fit-friends-token';
 
 export type Token = string;
 
-export const getToken = (): Token => {
-  const token = localStorage.getItem(AUTH_TOKEN_NAME);
+export const getAccessToken = (): Token => {
+  const token = localStorage.getItem(`${AUTH_TOKEN_NAME}-access`);
   return token ?? '';
 };
 
-export const saveToken = (token: Token): void => {
-  localStorage.setItem(AUTH_TOKEN_NAME, token);
+export const getRefreshToken = (): Token => {
+  const token = localStorage.getItem(`${AUTH_TOKEN_NAME}-refresh`);
+  return token ?? '';
 };
 
-export const dropToken = (): void => {
-  localStorage.removeItem(AUTH_TOKEN_NAME);
+export const saveTokens = (accessToken: Token, refreshToken: Token): void => {
+  localStorage.setItem(`${AUTH_TOKEN_NAME}-access`, accessToken);
+  localStorage.setItem(`${AUTH_TOKEN_NAME}-refresh`, refreshToken);
+};
+
+export const dropTokens = (): void => {
+  localStorage.removeItem(`${AUTH_TOKEN_NAME}-access`);
+  localStorage.removeItem(`${AUTH_TOKEN_NAME}-refresh`);
 };

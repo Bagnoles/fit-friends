@@ -6,10 +6,11 @@ import { Time, TIME_INTERVALS } from '../../types/time.enum';
 import Radio from '../../components/radio/radio';
 import { Level, LEVEL_NAMES } from '../../types/level.enum';
 import Input from '../../components/input/input';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useNavigate } from 'react-router-dom';
 import { addInterview } from '../../store/api-actions';
 import { AppRoutes } from '../../const';
+import { getUserInfo } from '../../store/user/user-selectors';
 
 
 function Interview():JSX.Element {
@@ -21,6 +22,7 @@ function Interview():JSX.Element {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const userId = useAppSelector(getUserInfo)?.id;
 
   const handleWorkoutTypesChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     if (workouts.includes(evt.target.value as WorkoutType)) {
@@ -51,7 +53,7 @@ function Interview():JSX.Element {
       caloriesAmount: totalCalories ?? 0,
       caloriesDay: dayCalories ?? 0,
       isReady: true,
-      userId: '0cb5e84f-a90b-4976-b957-6a0bbc5a74b5' //Не забыть убрать после добавления токенов ИЛИ брать из UserInfo
+      userId
     }
     dispatch(addInterview(interview))
       .then((response) => {
