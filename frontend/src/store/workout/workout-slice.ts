@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Workout } from '../../types/workout.type';
 import { NameSpace } from '../../const';
-import { fetchWorkouts } from '../api-actions';
+import { addReview, fetchWorkoutReviews, fetchWorkouts } from '../api-actions';
+import { Review } from '../../types/review.type';
 
 type WorkoutInitialStateType = {
   workouts: {
@@ -9,10 +10,20 @@ type WorkoutInitialStateType = {
     isLoading: boolean;
     isError: boolean;
   };
+  reviews: {
+    data: Review[];
+    isLoading: boolean;
+    isError: boolean;
+  };
 }
 
 const initialState: WorkoutInitialStateType = {
   workouts: {
+    data: [],
+    isLoading: false,
+    isError: false
+  },
+  reviews: {
     data: [],
     isLoading: false,
     isError: false
@@ -37,6 +48,22 @@ export const workoutSlice = createSlice({
         state.workouts.isError = false;
         state.workouts.isLoading = false;
         state.workouts.data = action.payload;
+      })
+      .addCase(fetchWorkoutReviews.pending, (state) => {
+        state.reviews.isError = false;
+        state.reviews.isLoading = true;
+      })
+      .addCase(fetchWorkoutReviews.rejected, (state) => {
+        state.reviews.isError = true;
+        state.reviews.isLoading = false;
+      })
+      .addCase(fetchWorkoutReviews.fulfilled, (state, action) => {
+        state.reviews.isError = false;
+        state.reviews.isLoading = false;
+        state.reviews.data = action.payload;
+      })
+      .addCase(addReview.fulfilled, (state, action) => {
+        state.reviews.data.push(action.payload);
       })
   }
 });

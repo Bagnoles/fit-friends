@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AuthorizationStatus, NameSpace } from '../../const';
 import { UserInfo } from '../../types/user.type';
-import { addInterview, checkAuthorization, loginAction, refreshTokens, registerAction } from '../api-actions';
+import { addInterview, checkAuthorization, getInterview, loginAction, refreshTokens, registerAction } from '../api-actions';
 
 type UserInitialStateType = {
   authorizationStatus: AuthorizationStatus;
   isRegisterError: boolean;
   isLoginError: boolean;
   isInterviewError: boolean;
-  userInfo: UserInfo | null;
+  userInfo: UserInfo | null ;
 }
 
 const initialState: UserInitialStateType = {
@@ -44,9 +44,20 @@ export const userSlice = createSlice({
       })
       .addCase(addInterview.fulfilled, (state, action) => {
         state.isInterviewError = false;
-        state.userInfo = action.payload;
+        if (state.userInfo) {
+          state.userInfo.interview = action.payload;
+        }
       })
       .addCase(addInterview.rejected, (state) => {
+        state.isInterviewError = true;
+      })
+      .addCase(getInterview.fulfilled, (state, action) => {
+        state.isInterviewError = false;
+        if (state.userInfo) {
+          state.userInfo.interview = action.payload;
+        }
+      })
+      .addCase(getInterview.rejected, (state) => {
         state.isInterviewError = true;
       })
       .addCase(checkAuthorization.fulfilled, (state, action) => {

@@ -22,13 +22,21 @@ export class ReviewRepository extends BasePostgresRepository<
       where: {
         workoutId,
       },
+      include: {
+        user: true,
+      },
     });
-    return documents.map((document) => this.createEntityFromDocument(document));
+    return documents.map((document) =>
+      this.createEntityFromDocument(document as Review),
+    );
   }
 
   public async save(entity: ReviewEntity): Promise<ReviewEntity> {
+    const pojoEntity = entity.toPOJO();
     const document = await this.client.review.create({
-      data: { ...entity.toPOJO() },
+      data: {
+        ...pojoEntity,
+      },
     });
     //entity.id = document.id;
     return this.createEntityFromDocument(document);

@@ -11,6 +11,8 @@ import { InjectUserIdInterceptor } from 'src/shared/interceptors/inject-user-id.
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { fillDto } from 'src/shared/utils/common';
+import { ReviewRdo } from './rdo/review.rdo';
 
 @Controller('reviews')
 export class ReviewController {
@@ -20,7 +22,10 @@ export class ReviewController {
   @Get('/:workoutId')
   public async index(@Param('workoutId') workoutId: string) {
     const result = await this.reviewService.getReviews(workoutId);
-    return result;
+    return fillDto(
+      ReviewRdo,
+      result.map((item) => item.toPOJO()),
+    );
   }
 
   @UseGuards(JwtAuthGuard)
@@ -28,6 +33,6 @@ export class ReviewController {
   @Post('/')
   public async create(@Body() dto: CreateReviewDto) {
     const result = await this.reviewService.addReview(dto);
-    return result;
+    return fillDto(ReviewRdo, result);
   }
 }

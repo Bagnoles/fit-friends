@@ -6,6 +6,7 @@ import { APIRoute } from '../const';
 import { saveTokens } from '../services/token';
 import { Interview } from '../types/interview.type';
 import { Workout } from '../types/workout.type';
+import { CreateReviewDto, Review } from '../types/review.type';
 
 const createAppAsyncThunk = createAsyncThunk.withTypes<{
   state: State;
@@ -28,9 +29,16 @@ export const loginAction = createAppAsyncThunk<UserTokens, LoginUserDto>('user/l
   }
 );
 
-export const addInterview = createAppAsyncThunk<UserInfo, Interview>('user/interview',
+export const addInterview = createAppAsyncThunk<Interview, Interview>('user/interview',
   async (dto, {extra: api}) => {
-    const {data} = await api.post<UserInfo>(APIRoute.Interview, dto);
+    const {data} = await api.post<Interview>(APIRoute.Interview, dto);
+    return data;
+  }
+);
+
+export const getInterview = createAppAsyncThunk<Interview, string>('user/getInterview',
+  async (userId, {extra: api}) => {
+    const {data} = await api.get<Interview>(`${APIRoute.Interview}/${userId}`);
     return data;
   }
 );
@@ -54,6 +62,20 @@ export const refreshTokens = createAppAsyncThunk<{accessToken: string, refreshTo
 export const fetchWorkouts = createAppAsyncThunk<Workout[], undefined>('workouts/fetchWorkouts',
   async (_arg, {extra: api}) => {
     const {data} = await api.get<Workout[]>(APIRoute.Workout);
+    return data;
+  }
+);
+
+export const fetchWorkoutReviews = createAppAsyncThunk<Review[], string>('workouts/reviews',
+  async (workoutId, {extra: api}) => {
+    const {data} = await api.get<Review[]>(`${APIRoute.Review}/${workoutId}`);
+    return data;
+  }
+);
+
+export const addReview = createAppAsyncThunk<Review, CreateReviewDto>('workouts/addReview',
+  async (dto, {extra: api}) => {
+    const {data} = await api.post<Review>(APIRoute.Review, dto);
     return data;
   }
 );

@@ -3,3 +3,9 @@ export enum Gender {
   Female = 'Female',
   Whatever = 'Whatever',
 }
+
+export const GENDER_NAMES = {
+  'Male': 'Мужской',
+  'Female': 'Женский',
+  'Whatever': 'Неважно'
+}

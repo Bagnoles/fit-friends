@@ -1,7 +1,27 @@
+import { useEffect, useState } from 'react';
 import Header from '../../components/header/header'
 import UserForm from './user-form/user-form';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getUserInfo } from '../../store/user/user-selectors';
+import NotFound from '../not-found/not-found';
+import { getInterview } from '../../store/api-actions';
 
 function Profile():JSX.Element {
+  const userInfo = useAppSelector(getUserInfo);
+  const dispatch = useAppDispatch();
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+
+  const handleEditingButton = () => {
+    setIsEdit(!isEdit);
+  }
+
+  if (!userInfo) {
+    return <NotFound />
+  }
+  useEffect(() => {
+    dispatch(getInterview(userInfo.id));
+  }, [])
+
   return (
     <div className="wrapper">
       <Header activePage="profile" />
@@ -10,7 +30,7 @@ function Profile():JSX.Element {
           <div className="container">
             <div className="inner-page__wrapper">
               <h1 className="visually-hidden">Личный кабинет</h1>
-              <UserForm />
+              <UserForm userInfo={userInfo} isEdit={isEdit} onEditButtonClick={handleEditingButton} />
               <div className="inner-page__content">
                 <div className="personal-account-user">
                   <div className="personal-account-user__schedule">
@@ -18,12 +38,12 @@ function Profile():JSX.Element {
                       <div className="personal-account-user__form">
                         <div className="personal-account-user__input">
                           <label><span className="personal-account-user__label">План на день, ккал</span>
-                            <input type="text" name="schedule-for-the-day" value="3 300" />
+                            <input type="text" name="schedule-for-the-day" value={userInfo.interview?.caloriesDay} />
                           </label>
                         </div>
                         <div className="personal-account-user__input">
                           <label><span className="personal-account-user__label">План на неделю, ккал</span>
-                            <input type="text" name="schedule-for-the-week" value="23 100" />
+                            <input type="text" name="schedule-for-the-week" value={( userInfo.interview?.caloriesDay ?? 0 ) * 7} />
                           </label>
                         </div>
                       </div>

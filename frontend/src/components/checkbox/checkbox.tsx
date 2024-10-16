@@ -2,7 +2,7 @@ type CheckboxProps = {
   text: string;
   value: string;
   checkedValues: string[];
-  onChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function Checkbox({text, value, checkedValues, onChange}: CheckboxProps):JSX.Element {

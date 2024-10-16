@@ -17,15 +17,15 @@ export class InterviewRepository extends BasePostgresRepository<
     super(entityFactory, client);
   }
 
-  public async findById(id: string): Promise<InterviewEntity> {
+  public async findByUserId(userId: string): Promise<InterviewEntity> {
     const document = await this.client.interview.findFirst({
       where: {
-        id,
+        userId,
       },
     });
 
     if (!document) {
-      throw new NotFoundException(`Interview with id ${id} not found.`);
+      throw new NotFoundException(`Interview with userId ${userId} not found.`);
     }
 
     return this.createEntityFromDocument(document as Interview);

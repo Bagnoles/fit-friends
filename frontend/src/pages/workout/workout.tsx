@@ -1,12 +1,15 @@
 import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
-import { useAppSelector } from '../../store/hooks';
-import { getWorkouts } from '../../store/workout/workout-selectors';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getReviews, getWorkouts } from '../../store/workout/workout-selectors';
 import NotFound from '../not-found/not-found';
 import ReviewsBlock from './reviews-block/reviews-block';
 import { WORKOUT_TYPES_NAME } from '../../types/workout-type.enum';
 import { TIME_INTERVALS } from '../../types/time.enum';
 import { Gender } from '../../types/gender.enum';
+import { useEffect, useState } from 'react';
+import { fetchWorkoutReviews } from '../../store/api-actions';
+import PopupReview from '../../components/popup-review/popup-review';
 
 function Workout():JSX.Element {
   const { id } = useParams();
@@ -17,6 +20,23 @@ function Workout():JSX.Element {
   }
 
   const {calories, coach, description, duration, gender, name, price, type, videoUrl} = workout;
+  const dispatch = useAppDispatch();
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchWorkoutReviews(id));
+    }
+  }, []);
+
+  const reviews = useAppSelector(getReviews);
+
+  const handleOpenPopup = () => {
+    setShowPopup(true);
+  }
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  }
 
   return (
     <div className="wrapper">
@@ -26,7 +46,7 @@ function Workout():JSX.Element {
           <div className="container">
             <div className="inner-page__wrapper">
               <h1 className="visually-hidden">Карточка тренировки</h1>
-              <ReviewsBlock />
+              <ReviewsBlock reviews={reviews} onAddReviewClick={handleOpenPopup} />
               <div className="training-card">
                 <div className="training-info">
                   <h2 className="visually-hidden">Информация о тренировке</h2>
@@ -116,6 +136,7 @@ function Workout():JSX.Element {
             </div>
           </div>
         </section>
+        {showPopup && <PopupReview onPopupClose={handleClosePopup} workoutId={id} />}
       </main>
     </div>
   );

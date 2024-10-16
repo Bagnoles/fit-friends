@@ -8,7 +8,7 @@ export class InterviewService {
   constructor(private readonly interviewRepository: InterviewRepository) {}
 
   public async getInterview(id: string): Promise<InterviewEntity> {
-    return await this.interviewRepository.findById(id);
+    return await this.interviewRepository.findByUserId(id);
   }
 
   public async saveInterview(dto: CreateInterviewDto) {
