@@ -4,9 +4,10 @@ import ReviewsList from './reviews-list';
 type ReviewBlockProps = {
   reviews: Review[];
   onAddReviewClick: () => void;
+  isReviewDisabled: boolean;
 }
 
-function ReviewsBlock({reviews, onAddReviewClick}: ReviewBlockProps):JSX.Element {
+function ReviewsBlock({reviews, onAddReviewClick, isReviewDisabled}: ReviewBlockProps):JSX.Element {
 
   const handleBackButtonClick = () => {
     window.history.back();
@@ -21,7 +22,7 @@ function ReviewsBlock({reviews, onAddReviewClick}: ReviewBlockProps):JSX.Element
       </button>
       <h2 className="reviews-side-bar__title">Отзывы</h2>
       {reviews.length === 0 ? <p>Отзывов пока нет. Будьте первым!</p> : <ReviewsList reviews={reviews} />}
-      <button className="btn btn--medium reviews-side-bar__button" type="button" onClick={onAddReviewClick} >Оставить отзыв</button>
+      <button className="btn btn--medium reviews-side-bar__button" type="button" onClick={onAddReviewClick} disabled={isReviewDisabled} >Оставить отзыв</button>
     </aside>
   );
 }

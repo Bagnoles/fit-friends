@@ -4,7 +4,9 @@ import UserForm from './user-form/user-form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getUserInfo } from '../../store/user/user-selectors';
 import NotFound from '../not-found/not-found';
-import { getInterview } from '../../store/api-actions';
+import { fetchUserBalance, getInterview } from '../../store/api-actions';
+import { Link } from 'react-router-dom';
+import { AppRoutes } from '../../const';
 
 function Profile():JSX.Element {
   const userInfo = useAppSelector(getUserInfo);
@@ -20,6 +22,7 @@ function Profile():JSX.Element {
   }
   useEffect(() => {
     dispatch(getInterview(userInfo.id));
+    dispatch(fetchUserBalance(userInfo.id));
   }, [])
 
   return (
@@ -54,12 +57,12 @@ function Profile():JSX.Element {
                         <svg width="30" height="26" aria-hidden="true">
                           <use xlinkHref="#icon-friends"></use>
                         </svg>
-                      </div><span className="thumbnail-link__text">Мои друзья</span></a><a className="thumbnail-link thumbnail-link--theme-light" href="#">
+                      </div><span className="thumbnail-link__text">Мои друзья</span></a><Link className="thumbnail-link thumbnail-link--theme-light" to={AppRoutes.Balance}>
                       <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                         <svg width="30" height="26" aria-hidden="true">
                           <use xlinkHref="#icon-shopping-cart"></use>
                         </svg>
-                      </div><span className="thumbnail-link__text">Мои покупки</span></a>
+                      </div><span className="thumbnail-link__text">Мои покупки</span></Link>
                         <div className="thumbnail-spec-gym">
                           <div className="thumbnail-spec-gym__image">
                             <picture>

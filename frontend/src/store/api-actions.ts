@@ -7,6 +7,8 @@ import { saveTokens } from '../services/token';
 import { Interview } from '../types/interview.type';
 import { Workout } from '../types/workout.type';
 import { CreateReviewDto, Review } from '../types/review.type';
+import { CreateOrderDto, Order } from '../types/order.type';
+import { Balance } from '../types/balance.type';
 
 const createAppAsyncThunk = createAsyncThunk.withTypes<{
   state: State;
@@ -76,6 +78,34 @@ export const fetchWorkoutReviews = createAppAsyncThunk<Review[], string>('workou
 export const addReview = createAppAsyncThunk<Review, CreateReviewDto>('workouts/addReview',
   async (dto, {extra: api}) => {
     const {data} = await api.post<Review>(APIRoute.Review, dto);
+    return data;
+  }
+);
+
+export const addOrder = createAppAsyncThunk<Order, CreateOrderDto>('user/buy',
+  async (dto, {extra: api}) => {
+    const {data} = await api.post<Order>(APIRoute.Order, dto);
+    return data;
+  }
+);
+
+export const fetchUserBalance = createAppAsyncThunk<Balance[], string>('user/getBalance',
+  async (userId, {extra: api}) => {
+    const {data} = await api.get<Balance[]>(`${APIRoute.Balance}/${userId}`);
+    return data;
+  }
+);
+
+export const addToBalance = createAppAsyncThunk<Balance, {workoutId: string, count: number}>('user/addToBalance',
+  async (dto, {extra: api}) => {
+    const {data} = await api.post<Balance>(APIRoute.Balance, dto);
+    return data;
+  }
+);
+
+export const deleteFromBalance = createAppAsyncThunk<Balance, {workoutId: string}>('user/deleteFromBalance',
+  async (dto, {extra: api}) => {
+    const {data} = await api.post<Balance>(`${APIRoute.Balance}/delete`, dto);
     return data;
   }
 );

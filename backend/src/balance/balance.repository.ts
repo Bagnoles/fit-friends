@@ -17,29 +17,32 @@ export class BalanceRepository extends BasePostgresRepository<
     super(entityFactory, client);
   }
 
-  public async findAllByUserId(userId: string): Promise<BalanceEntity[]> {
+  public async findAllByUserId(userId: string) {
     const documents = await this.client.balance.findMany({
       where: {
         userId,
       },
+      include: {
+        workout: true,
+      },
     });
-    return documents.map((document) => this.createEntityFromDocument(document));
+    return documents;
   }
 
-  public async addToBalance(userId: string, workoutId: string) {
+  public async addToBalance(userId: string, workoutId: string, count: number) {
     await this.client.balance.upsert({
       where: {
         userId_workoutId: { userId, workoutId },
       },
       update: {
         count: {
-          increment: 1,
+          increment: count,
         },
       },
       create: {
         userId,
         workoutId,
-        count: 1,
+        count: count,
       },
     });
   }

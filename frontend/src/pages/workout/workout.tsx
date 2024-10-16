@@ -10,10 +10,13 @@ import { Gender } from '../../types/gender.enum';
 import { useEffect, useState } from 'react';
 import { fetchWorkoutReviews } from '../../store/api-actions';
 import PopupReview from '../../components/popup-review/popup-review';
+import PopupBuy from '../../components/popup-buy/popup-buy';
+import { getBalance } from '../../store/balance/balance-selectors';
 
 function Workout():JSX.Element {
   const { id } = useParams();
   const workout = useAppSelector(getWorkouts).find((item) => item.id === id);
+  const userBalance = useAppSelector(getBalance);
 
   if (!workout) {
     return <NotFound />;
@@ -21,7 +24,10 @@ function Workout():JSX.Element {
 
   const {calories, coach, description, duration, gender, name, price, type, videoUrl} = workout;
   const dispatch = useAppDispatch();
-  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [showReviewPopup, setShowReviewPopup] = useState<boolean>(false);
+  const [showBuyPopup, setShowBuyPopup] = useState<boolean>(false);
+
+  const isWorkoutInBalance = !!userBalance.find((item) => item.workout?.id === workout.id);
 
   useEffect(() => {
     if (id) {
@@ -31,11 +37,17 @@ function Workout():JSX.Element {
 
   const reviews = useAppSelector(getReviews);
 
-  const handleOpenPopup = () => {
-    setShowPopup(true);
+  const handleOpenReviewPopup = () => {
+    setShowReviewPopup(true);
   }
-  const handleClosePopup = () => {
-    setShowPopup(false);
+  const handleCloseReviewPopup = () => {
+    setShowReviewPopup(false);
+  }
+  const handleOpenBuyPopup = () => {
+    setShowBuyPopup(true);
+  }
+  const handleCloseBuyPopup = () => {
+    setShowBuyPopup(false);
   }
 
   return (
@@ -46,7 +58,7 @@ function Workout():JSX.Element {
           <div className="container">
             <div className="inner-page__wrapper">
               <h1 className="visually-hidden">Карточка тренировки</h1>
-              <ReviewsBlock reviews={reviews} onAddReviewClick={handleOpenPopup} />
+              <ReviewsBlock reviews={reviews} onAddReviewClick={handleOpenReviewPopup} isReviewDisabled={!isWorkoutInBalance} />
               <div className="training-card">
                 <div className="training-info">
                   <h2 className="visually-hidden">Информация о тренировке</h2>
@@ -107,7 +119,7 @@ function Workout():JSX.Element {
                             </label>
                             <div className="training-info__error">Введите число</div>
                           </div>
-                          <button className="btn training-info__buy" type="button">Купить</button>
+                          <button className="btn training-info__buy" type="button" onClick={handleOpenBuyPopup} disabled={isWorkoutInBalance}>Купить</button>
                         </div>
                       </div>
                     </form>
@@ -128,7 +140,7 @@ function Workout():JSX.Element {
                     </button>
                   </div>
                   <div className="training-video__buttons-wrapper">
-                    <button className="btn training-video__button training-video__button--start" type="button" disabled>Приступить</button>
+                    <button className="btn training-video__button training-video__button--start" type="button" disabled={!isWorkoutInBalance}>Приступить</button>
                     <button className="btn training-video__button training-video__button--stop" type="button">Закончить</button>
                   </div>
                 </div>
@@ -136,7 +148,8 @@ function Workout():JSX.Element {
             </div>
           </div>
         </section>
-        {showPopup && <PopupReview onPopupClose={handleClosePopup} workoutId={id} />}
+        {showReviewPopup && <PopupReview onPopupClose={handleCloseReviewPopup} workoutId={id} />}
+        {showBuyPopup && <PopupBuy onPopupClose={handleCloseBuyPopup} workout={workout} />}
       </main>
     </div>
   );

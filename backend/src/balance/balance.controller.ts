@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Post,
@@ -12,6 +11,8 @@ import { BalanceService } from './balance.service';
 import { InjectUserIdInterceptor } from 'src/shared/interceptors/inject-user-id.interceptor';
 import { BalanceDto } from './dto/balance.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { fillDto } from 'src/shared/utils/common';
+import { BalanceRdo } from './rdo/balance.rdo';
 
 @Controller('balance')
 export class BalanceController {
@@ -21,7 +22,7 @@ export class BalanceController {
   @Get('/:userId')
   public async index(@Param('userId') userId: string) {
     const result = await this.balanceService.getBalance(userId);
-    return result;
+    return fillDto(BalanceRdo, result);
   }
 
   @UseInterceptors(InjectUserIdInterceptor)
@@ -31,13 +32,14 @@ export class BalanceController {
     const result = await this.balanceService.addToBalance(
       dto.userId,
       dto.workoutId,
+      dto.count,
     );
     return result;
   }
 
   @UseInterceptors(InjectUserIdInterceptor)
   @UseGuards(JwtAuthGuard)
-  @Delete('/')
+  @Post('/delete')
   public async delete(@Body() dto: BalanceDto) {
     const result = await this.balanceService.deleteFromBalance(
       dto.userId,

@@ -10,6 +10,7 @@ import Workout from '../../pages/workout/workout';
 import Catalog from '../../pages/catalog/catalog';
 import Profile from '../../pages/profile/profile';
 import PrivateRoute from '../private-route/private-route';
+import Purchase from '../../pages/purchase/purchase';
 
 function App():JSX.Element {
   return (
@@ -19,6 +20,7 @@ function App():JSX.Element {
       <Route path={AppRoutes.Register} element={<PrivateRoute isReverse><Register /></PrivateRoute>} />
       <Route path={AppRoutes.Interview} element={<Interview />} />
       <Route path={AppRoutes.Profile} element={<PrivateRoute><Profile /></PrivateRoute>} />
+      <Route path={AppRoutes.Balance} element={<PrivateRoute><Purchase /></PrivateRoute>} />
       <Route path={AppRoutes.Main} element={<PrivateRoute><Main /></PrivateRoute>} />
       <Route path={AppRoutes.Workout} element={<PrivateRoute><Catalog /></PrivateRoute>} />
       <Route path={`${AppRoutes.Workout}/:id`} element={<PrivateRoute><Workout /></PrivateRoute>} />

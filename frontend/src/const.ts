@@ -5,7 +5,8 @@ export const AppRoutes = {
   Login: '/login',
   Main: '/main',
   Profile: '/profile',
-  Workout: '/workouts'
+  Workout: '/workouts',
+  Balance: '/balance'
 } as const;
 
 export enum AuthorizationStatus {
@@ -16,12 +17,15 @@ export enum AuthorizationStatus {
 
 export enum NameSpace {
   User = 'USER',
-  Workout = 'WORKOUT'
+  Workout = 'WORKOUT',
+  Balance = 'BALANCE'
 }
 
 export enum APIRoute {
   User = '/users',
   Interview = '/interview',
   Workout = '/workouts',
-  Review = '/reviews'
+  Review = '/reviews',
+  Order = '/orders',
+  Balance = '/balance',
 }
