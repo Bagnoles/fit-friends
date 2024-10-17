@@ -1,11 +1,18 @@
 # Get workouts
 GET http://localhost:3000/workouts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZDJiNjMyLTJlMmQtNDEwZi1iMjIzLWZkYWZiOTFlY2Q5MCIsImVtYWlsIjoibWFpbDEyQHRlc3QucnUiLCJpYXQiOjE3MjkxNTQ5MjgsImV4cCI6MTcyOTE1NTgyOH0.HtfCELkICUS7-aVofJ_2K4HvqVAvNVB2txRpaiApp2A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmMDAyZTE0LTQ0OTgtNDAzOS1iZjMyLWQwMWM0ZGI4MWUzYiIsImVtYWlsIjoibWFpbDEzQHRlc3QucnUiLCJpYXQiOjE3MjkxODk4NTYsImV4cCI6MTcyOTE5MDc1Nn0.eLh-PvTE3-bKkJiKVkgKxKOWDPkkl4UtdXzaPHCC2DM
 
 ###
 
 # Get workout by ID
 GET http://localhost:3000/workouts/6d336740-96a2-4162-bea6-23asw5976hd6 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZDJiNjMyLTJlMmQtNDEwZi1iMjIzLWZkYWZiOTFlY2Q5MCIsImVtYWlsIjoibWFpbDEyQHRlc3QucnUiLCJpYXQiOjE3MjkxNTQ5MjgsImV4cCI6MTcyOTE1NTgyOH0.HtfCELkICUS7-aVofJ_2K4HvqVAvNVB2txRpaiApp2A
+
+###
+
+# Get workouts with query
+
+GET http://localhost:3000/workouts?limit=3&page=1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmMDAyZTE0LTQ0OTgtNDAzOS1iZjMyLWQwMWM0ZGI4MWUzYiIsImVtYWlsIjoibWFpbDEzQHRlc3QucnUiLCJpYXQiOjE3MjkxODk4NTYsImV4cCI6MTcyOTE5MDc1Nn0.eLh-PvTE3-bKkJiKVkgKxKOWDPkkl4UtdXzaPHCC2DM
 
 ###
