@@ -1,0 +1,46 @@
+# Create a new user
+POST http://localhost:3000/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Test User 12",
+  "email": "mail12@test.ru",
+  "avatarUrl": "img/content/user-photo-1.png",
+  "password": "123qwerty",
+  "gender": "Male",
+  "description": "Descashygdhasjdgadads",
+  "subway": "Zvezdnaya",
+  "imageUrl": "img/content/user-photo-1.png"
+}
+
+###
+
+# Get user by ID
+GET http://localhost:3000/users/3fd2b632-2e2d-410f-b223-fdafb91ecd90 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZDJiNjMyLTJlMmQtNDEwZi1iMjIzLWZkYWZiOTFlY2Q5MCIsImVtYWlsIjoibWFpbDEyQHRlc3QucnUiLCJpYXQiOjE3MjkxNTQ5MjgsImV4cCI6MTcyOTE1NTgyOH0.HtfCELkICUS7-aVofJ_2K4HvqVAvNVB2txRpaiApp2A
+
+###
+
+# Login user by email and password
+POST http://localhost:3000/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "mail12@test.ru",
+  "password": "123qwerty"
+}
+
+###
+
+# Get new JWT pair
+POST http://localhost:3000/users/refresh HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZDJiNjMyLTJlMmQtNDEwZi1iMjIzLWZkYWZiOTFlY2Q5MCIsImVtYWlsIjoibWFpbDEyQHRlc3QucnUiLCJ0b2tlbklkIjoiYjU4YzRiMjAtZjQ2NS00ZDE4LTlmYmUtODM5OThhODQ4NWQwIiwiaWF0IjoxNzI5MTU0OTI4LCJleHAiOjE3Mjk3NTk3Mjh9.bOXu-v52KeVTeLLkCQYK8KvrkZPBopaeisn4UdXXd-I
+
+###
+
+# Check user token
+POST http://localhost:3000/users/check HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZDJiNjMyLTJlMmQtNDEwZi1iMjIzLWZkYWZiOTFlY2Q5MCIsImVtYWlsIjoibWFpbDEyQHRlc3QucnUiLCJpYXQiOjE3MjkxNTQ5MjgsImV4cCI6MTcyOTE1NTgyOH0.HtfCELkICUS7-aVofJ_2K4HvqVAvNVB2txRpaiApp2A
+
+###
+

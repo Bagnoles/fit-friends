@@ -6,6 +6,7 @@ import {
   Time,
   Type,
 } from '@prisma/client';
+import { generateHash } from '../src/shared/utils/hasher';
 
 const USERS_UUIDS = [
   '6d308040-96a2-4162-bea6-2338e9976540',
@@ -17,7 +18,9 @@ const USERS_UUIDS = [
 const WORKOUTS_UUIDS = [
   '6d308040-hf6s-4162-bea6-2338e9sd2760',
   '6d336740-96a2-4162-bea6-23asw5976hd6',
-  '6d30d530-hf6s-4162-bea6-23klye997650',
+  '6d3er530-hf6s-4162-bea6-23klye997650',
+  '6d30d530-hf6s-4162-bea6-2nry6j997650',
+  '6d30d530-hf6s-4162-hfy5-23klye997650',
 ];
 
 function getUsers() {
@@ -125,7 +128,37 @@ function getWorkouts() {
       gender: 'Female',
       videoUrl: 'img/content/training-video/video-thumbnail.png',
       coach: 'Nastya',
-      isSpecial: false,
+      isSpecial: true,
+    },
+    {
+      id: WORKOUTS_UUIDS[3],
+      name: 'Тренировка 2',
+      imageUrl: 'img/content/thumbnails/training-12.jpg',
+      level: 'Professional',
+      type: 'Running',
+      duration: 'VeryLong',
+      price: 3500,
+      calories: 1000,
+      description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+      gender: 'Male',
+      videoUrl: 'img/content/training-video/video-thumbnail.png',
+      coach: 'Nikita',
+      isSpecial: true,
+    },
+    {
+      id: WORKOUTS_UUIDS[4],
+      name: 'Тренировка 3',
+      imageUrl: 'img/content/thumbnails/training-12.jpg',
+      level: 'Amateur',
+      type: 'Boxing',
+      duration: 'Medium',
+      price: 2000,
+      calories: 400,
+      description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+      gender: 'Female',
+      videoUrl: 'img/content/training-video/video-thumbnail.png',
+      coach: 'Olya',
+      isSpecial: true,
     },
   ];
 }
@@ -145,7 +178,7 @@ async function seedDb(prismaClient: PrismaClient) {
         avatarUrl: user.avatarUrl,
         name: user.name,
         subway: user.subway as Subway,
-        passwordHash: user.password,
+        passwordHash: await generateHash(user.password),
       },
     });
   }

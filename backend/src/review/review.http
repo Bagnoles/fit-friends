@@ -1,0 +1,16 @@
+# Get reviews by workoutID
+GET http://localhost:3000/reviews/6d30d530-hf6s-4162-bea6-23klye997650 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZDJiNjMyLTJlMmQtNDEwZi1iMjIzLWZkYWZiOTFlY2Q5MCIsImVtYWlsIjoibWFpbDEyQHRlc3QucnUiLCJpYXQiOjE3MjkxNTQ5MjgsImV4cCI6MTcyOTE1NTgyOH0.HtfCELkICUS7-aVofJ_2K4HvqVAvNVB2txRpaiApp2A
+
+###
+
+# Create review
+POST http://localhost:3000/reviews/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZDJiNjMyLTJlMmQtNDEwZi1iMjIzLWZkYWZiOTFlY2Q5MCIsImVtYWlsIjoibWFpbDEyQHRlc3QucnUiLCJpYXQiOjE3MjkxNTQ5MjgsImV4cCI6MTcyOTE1NTgyOH0.HtfCELkICUS7-aVofJ_2K4HvqVAvNVB2txRpaiApp2A
+Content-Type: application/json
+
+{
+  "workoutId": "6d308040-hf6s-4162-bea6-2338e9sd2760",
+  "rating": 4,
+  "text": "descriptiondescription"
+}

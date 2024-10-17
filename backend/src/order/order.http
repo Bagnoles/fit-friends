@@ -1,0 +1,14 @@
+# Create order
+POST http://localhost:3000/orders/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZDJiNjMyLTJlMmQtNDEwZi1iMjIzLWZkYWZiOTFlY2Q5MCIsImVtYWlsIjoibWFpbDEyQHRlc3QucnUiLCJpYXQiOjE3MjkxNTQ5MjgsImV4cCI6MTcyOTE1NTgyOH0.HtfCELkICUS7-aVofJ_2K4HvqVAvNVB2txRpaiApp2A
+Content-Type: application/json
+
+{
+  "serviceId": "6d308040-hf6s-4162-bea6-2338e9sd2760",
+  "orderType": "Subscription",
+  "count": 2,
+  "price": 900,
+  "payment": "Visa"
+}
+
+###

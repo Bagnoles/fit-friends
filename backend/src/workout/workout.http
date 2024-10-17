@@ -1,0 +1,11 @@
+# Get workouts
+GET http://localhost:3000/workouts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZDJiNjMyLTJlMmQtNDEwZi1iMjIzLWZkYWZiOTFlY2Q5MCIsImVtYWlsIjoibWFpbDEyQHRlc3QucnUiLCJpYXQiOjE3MjkxNTQ5MjgsImV4cCI6MTcyOTE1NTgyOH0.HtfCELkICUS7-aVofJ_2K4HvqVAvNVB2txRpaiApp2A
+
+###
+
+# Get workout by ID
+GET http://localhost:3000/workouts/6d336740-96a2-4162-bea6-23asw5976hd6 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZDJiNjMyLTJlMmQtNDEwZi1iMjIzLWZkYWZiOTFlY2Q5MCIsImVtYWlsIjoibWFpbDEyQHRlc3QucnUiLCJpYXQiOjE3MjkxNTQ5MjgsImV4cCI6MTcyOTE1NTgyOH0.HtfCELkICUS7-aVofJ_2K4HvqVAvNVB2txRpaiApp2A
+
+###
