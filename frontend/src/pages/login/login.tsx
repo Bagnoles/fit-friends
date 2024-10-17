@@ -5,6 +5,7 @@ import { useAppDispatch } from '../../store/hooks';
 import { useNavigate } from 'react-router-dom';
 import { checkAuthorization, loginAction } from '../../store/api-actions';
 import { AppRoutes } from '../../const';
+import { toast } from 'react-toastify';
 
 
 function Login():JSX.Element {
@@ -29,6 +30,9 @@ function Login():JSX.Element {
           dispatch(checkAuthorization())
           navigate(AppRoutes.Main);
         }
+        if (response.meta.requestStatus === 'rejected') {
+          toast.error('Неверный email или пароль');
+        }
       })
   };
 
@@ -45,8 +49,26 @@ function Login():JSX.Element {
               <div className="popup-form__form">
                 <form method="get" onSubmit={handleSubmitLoginForm}>
                   <div className="sign-in">
-                    <Input name='email' onChange={handleEmailChange} text='E-mail' type='email' value={email} isSignInInput />
-                    <Input name='password' onChange={handlePasswordChange} text='Пароль' type='password' value={password} isSignInInput />
+                    <Input
+                      name='email'
+                      onChange={handleEmailChange}
+                      text='E-mail'
+                      type='email'
+                      value={email}
+                      isSignInInput
+                      required
+                    />
+                    <Input
+                      name='password'
+                      onChange={handlePasswordChange}
+                      text='Пароль'
+                      type='password'
+                      value={password}
+                      isSignInInput
+                      pattern='^.{6,12}$'
+                      message='Минимальная длина пароля 6 символов, максимальная - 12 символов'
+                      required
+                    />
                     <button className="btn sign-in__button" type="submit">Продолжить</button>
                   </div>
                 </form>

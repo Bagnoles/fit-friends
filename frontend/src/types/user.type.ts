@@ -21,7 +21,7 @@ export type CreateUserDto = {
   avatarUrl: string;
   password: string;
   gender: Gender;
-  birthday?: Date;
+  birthday?: string;
   description: string;
   subway: Subway;
   imageUrl: string;

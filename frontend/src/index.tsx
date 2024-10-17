@@ -5,6 +5,7 @@ import App from './components/app/app';
 import { store } from './store';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { checkAuthorization, fetchWorkouts, refreshTokens } from './store/api-actions';
 
 const root = ReactDOM.createRoot(

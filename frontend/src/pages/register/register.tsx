@@ -54,12 +54,12 @@ function Register():JSX.Element {
       name,
       password,
       email,
-      birthday: birthday === '' ? undefined : new Date(birthday) ,
+      birthday: birthday === '' ? undefined : new Date(birthday).toISOString() ,
       gender,
       subway: location as Subway,
       avatarUrl: 'img/content/user-photo-2.png',
       imageUrl: 'img/content/user-photo-2.png',
-      description: 'lorem ipsum lorem ipsum lorem ipsum',
+      description: 'Введите описание пользователя....',
     }
     dispatch(registerAction(newUser))
       .then((response) => {
@@ -97,8 +97,17 @@ function Register():JSX.Element {
                       </div>
                     </div>
                     <div className="sign-up__data">
-                      <Input name='name' text='Имя' type='text' value={name} onChange={handleNameChange} />
-                      <Input name='email' text='E-mail' type='email' value={email} onChange={handleEmailChange} />
+                      <Input
+                        name='name'
+                        text='Имя'
+                        type='text'
+                        value={name}
+                        onChange={handleNameChange}
+                        pattern='^.{1,15}$'
+                        message='Минимальная длина имени 1 символ, максимальная - 15 символов'
+                        required
+                      />
+                      <Input name='email' text='E-mail' type='email' value={email} onChange={handleEmailChange} required />
                       <Input name='birthday' text='Дата рождения' type='date' value={birthday} onChange={handleBirthdayChange} />
                       <div className="custom-select custom-select--not-selected" ref={selectRef}>
                         <span className="custom-select__label">Ваша локация</span>
@@ -114,7 +123,16 @@ function Register():JSX.Element {
                           {Object.values(Subway).map((item) => <li className='custom-select__item' data-value={item} key={item} onClick={handleSelectItemClick}>{LOCATION_NAMES[item]}</li>)}
                         </ul>
                       </div>
-                      <Input name='password' text='Пароль' type='password' value={password} onChange={handlePasswordChange} />
+                      <Input
+                        name='password'
+                        text='Пароль'
+                        type='password'
+                        value={password}
+                        onChange={handlePasswordChange}
+                        pattern='^.{6,12}$'
+                        message='Минимальная длина пароля 6 символов, максимальная - 12 символов'
+                        required
+                      />
                       <div className="sign-up__radio"><span className="sign-up__label">Пол</span>
                         <div className="custom-toggle-radio custom-toggle-radio--big">
                           {Object.values(Gender).map((item) => <Radio

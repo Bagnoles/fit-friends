@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { addInterview } from '../../store/api-actions';
 import { AppRoutes } from '../../const';
 import { getUserInfo } from '../../store/user/user-selectors';
+import { toast } from 'react-toastify';
 
 
 function Interview():JSX.Element {
@@ -46,6 +47,10 @@ function Interview():JSX.Element {
 
   const handleSubmitInterviewForm = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+    if (workouts.length === 0) {
+      toast.warn('Выберите тип тренировок!');
+      return;
+    }
     const interview = {
       level,
       workoutTypes: workouts,
@@ -92,10 +97,32 @@ function Interview():JSX.Element {
                       </div>
                       <div className="questionnaire-user__block">
                         <div className="questionnaire-user__calories-lose"><span className="questionnaire-user__legend">Сколько калорий хотите сбросить</span>
-                          <Input name='calories-lose' onChange={handleTotalCaloriesChange} text='ккал' type='number' value={totalCalories ? totalCalories.toString() : ''} isInterviewInput={true} />
+                          <Input
+                            name='calories-lose'
+                            onChange={handleTotalCaloriesChange}
+                            text='ккал'
+                            type='number'
+                            value={totalCalories ? totalCalories.toString() : ''}
+                            isInterviewInput={true}
+                            min={1000}
+                            max={5000}
+                            message='Введите число от 1000 до 5000'
+                            required
+                          />
                         </div>
                         <div className="questionnaire-user__calories-waste"><span className="questionnaire-user__legend">Сколько калорий тратить в день</span>
-                          <Input name='calories-waste' onChange={handleDayCaloriesChange} text='ккал' type='number' value={dayCalories ? dayCalories.toString() : ''} isInterviewInput={true} />
+                          <Input
+                            name='calories-waste'
+                            onChange={handleDayCaloriesChange}
+                            text='ккал'
+                            type='number'
+                            value={dayCalories ? dayCalories.toString() : ''}
+                            isInterviewInput={true}
+                            min={1000}
+                            max={5000}
+                            message='Введите число от 1000 до 5000'
+                            required
+                          />
                         </div>
                       </div>
                     </div>

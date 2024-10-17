@@ -2,6 +2,7 @@ import { useState } from 'react';
 import RatingItem from './rating-item';
 import { useAppDispatch } from '../../store/hooks';
 import { addReview } from '../../store/api-actions';
+import { toast } from 'react-toastify';
 
 const RATINGS = [1,2,3,4,5];
 
@@ -23,6 +24,10 @@ function PopupReview({onPopupClose, workoutId}: PopupReviewProps):JSX.Element {
     setRating(evt.target.value);
   }
   const handleAddReview = () => {
+    if (text.length < 100 || text.length > 1024) {
+      toast.error('Длина отзыва должнв быть больше 100 символов и меньше 1024 символов');
+      return;
+    }
     if (rating && workoutId) {
       dispatch(addReview({
         workoutId,

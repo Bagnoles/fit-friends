@@ -4,6 +4,7 @@ import { PaymentType } from '../../types/payment-type.enum';
 import { useAppDispatch } from '../../store/hooks';
 import { addOrder, addToBalance } from '../../store/api-actions';
 import { PurchaseType } from '../../types/purchase-type.enum';
+import { toast } from 'react-toastify';
 
 type PopupBuyProps = {
   onPopupClose: () => void;
@@ -33,6 +34,10 @@ function PopupBuy({onPopupClose, workout}: PopupBuyProps):JSX.Element {
   }
 
   const handleBuyButton = () => {
+    if (count === 0 || count > 50) {
+      toast.error('Количество тренировок должно быть от 1 до 50');
+      return;
+    }
     dispatch(addOrder({
       serviceId: id,
       orderType: PurchaseType.Subscription,
