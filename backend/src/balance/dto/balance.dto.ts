@@ -1,10 +1,10 @@
-import { IsInt, IsUUID } from 'class-validator';
+import { IsInt, IsString } from 'class-validator';
 
 export class BalanceDto {
-  @IsUUID()
+  @IsString()
   userId: string;
 
-  @IsUUID()
+  @IsString()
   workoutId: string;
 
   @IsInt()

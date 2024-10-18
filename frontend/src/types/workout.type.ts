@@ -18,4 +18,5 @@ export type Workout = {
   videoUrl: string;
   coach: string;
   isSpecial: boolean;
+  review: {rating: number}[];
 }

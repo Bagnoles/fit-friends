@@ -7,7 +7,7 @@ import { CreateReviewDto } from './dto/create-review.dto';
 export class ReviewService {
   constructor(private readonly reviewRepository: ReviewRepository) {}
 
-  public async getReviews(workoutId: string): Promise<ReviewEntity[]> {
+  public async getReviews(workoutId: string) {
     return await this.reviewRepository.findAllByWorkoutId(workoutId);
   }
 

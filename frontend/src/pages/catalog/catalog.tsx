@@ -8,13 +8,14 @@ import { fetchWorkouts } from '../../store/api-actions';
 import { WorkoutType } from '../../types/workout-type.enum';
 import { SortDirection } from '../../types/sort-direction.enum';
 import { SortType } from '../../types/sort-type.enum';
+import { DEFAULT_PAGE_LIMIT } from '../../const';
 
-const DEFAULT_PAGE_LIMIT = 6;
 const MAX_PRICE = 10000;
 const MAX_CALORIES = 1000;
 
 function Catalog():JSX.Element {
   const workoutsWithPagination = useAppSelector(getWorkoutsWithPagination);
+  console.log(workoutsWithPagination);
   const isServerError = useAppSelector(getWorkoutErrorStatus);
   const isLoading = useAppSelector(getWorkoutLoadingStatus);
 

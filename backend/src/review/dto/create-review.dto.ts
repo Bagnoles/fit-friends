@@ -1,7 +1,6 @@
 import {
   IsInt,
   IsString,
-  IsUUID,
   Max,
   MaxLength,
   Min,
@@ -9,10 +8,10 @@ import {
 } from 'class-validator';
 
 export class CreateReviewDto {
-  @IsUUID()
+  @IsString()
   userId: string;
 
-  @IsUUID()
+  @IsString()
   workoutId: string;
 
   @IsInt()

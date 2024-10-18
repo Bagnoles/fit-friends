@@ -12,6 +12,7 @@ import { fetchWorkoutReviews } from '../../store/api-actions';
 import PopupReview from '../../components/popup-review/popup-review';
 import PopupBuy from '../../components/popup-buy/popup-buy';
 import { getBalance } from '../../store/balance/balance-selectors';
+import { getAverageRating } from '../../utils';
 
 function Workout():JSX.Element {
   const { id } = useParams();
@@ -27,6 +28,7 @@ function Workout():JSX.Element {
   const [showReviewPopup, setShowReviewPopup] = useState<boolean>(false);
   const [showBuyPopup, setShowBuyPopup] = useState<boolean>(false);
 
+  const workoutRating = getAverageRating(workout);
   const isWorkoutInBalance = !!userBalance.find((item) => item.workout?.id === workout.id);
 
   useEffect(() => {
@@ -48,6 +50,13 @@ function Workout():JSX.Element {
   }
   const handleCloseBuyPopup = () => {
     setShowBuyPopup(false);
+  }
+
+  const handleWorkoutStart = () => {
+
+  }
+  const handleWorkoutEnd = () => {
+
   }
 
   return (
@@ -94,7 +103,7 @@ function Workout():JSX.Element {
                                 <svg width="18" height="18" aria-hidden="true">
                                   <use xlinkHref="#icon-star"></use>
                                 </svg></span>
-                              <input type="number" name="rating" value="4" disabled />
+                              <input type="number" name="rating" value={workoutRating} disabled />
                             </label>
                           </div>
                           <ul className="training-info__list">
@@ -133,15 +142,24 @@ function Workout():JSX.Element {
                         <source type="image/webp" srcSet={videoUrl} /><img src={videoUrl} srcSet={videoUrl} width="922" height="566" alt="Обложка видео" />
                       </picture>
                     </div>
-                    <button className="training-video__play-button btn-reset">
+                    <button className="training-video__play-button btn-reset" disabled={!isWorkoutInBalance}>
                       <svg width="18" height="30" aria-hidden="true">
                         <use xlinkHref="#icon-arrow"></use>
                       </svg>
                     </button>
                   </div>
                   <div className="training-video__buttons-wrapper">
-                    <button className="btn training-video__button training-video__button--start" type="button" disabled={!isWorkoutInBalance}>Приступить</button>
-                    <button className="btn training-video__button training-video__button--stop" type="button">Закончить</button>
+                    <button
+                      className="btn training-video__button training-video__button--start"
+                      type="button"
+                      disabled={!isWorkoutInBalance}
+                      onClick={handleWorkoutStart}
+                    >Приступить</button>
+                    <button
+                      className="btn training-video__button training-video__button--stop"
+                      type="button"
+                      onClick={handleWorkoutEnd}
+                    >Закончить</button>
                   </div>
                 </div>
               </div>

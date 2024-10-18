@@ -23,7 +23,11 @@ export class BalanceRepository extends BasePostgresRepository<
         userId,
       },
       include: {
-        workout: true,
+        workout: {
+          include: {
+            review: true,
+          },
+        },
       },
     });
     return documents;

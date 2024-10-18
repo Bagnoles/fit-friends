@@ -6,7 +6,6 @@ import { Workout } from 'src/shared/types/workout.interface';
 import { WorkoutFactory } from './workout.factory';
 import { PrismaClientService } from 'src/prisma-client/prisma-client.service';
 import { WorkoutQuery } from './workout.query';
-import { PaginationResult } from 'src/shared/types/pagination.interface';
 import { WorkoutType } from 'src/shared/types/workout-type.enum';
 
 @Injectable()
@@ -30,9 +29,7 @@ export class WorkoutRepository extends BasePostgresRepository<
     return Math.ceil(totalCount / limit);
   }
 
-  public async findAll(
-    query?: WorkoutQuery,
-  ): Promise<PaginationResult<WorkoutEntity>> {
+  public async findAll(query?: WorkoutQuery) {
     const skip =
       query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
     const take = query?.limit;
@@ -51,14 +48,24 @@ export class WorkoutRepository extends BasePostgresRepository<
     }
 
     const [records, workoutCount] = await Promise.all([
-      this.client.workout.findMany({ where, orderBy, skip, take }),
+      this.client.workout.findMany({
+        where,
+        orderBy,
+        skip,
+        take,
+        include: {
+          review: {
+            select: {
+              rating: true,
+            },
+          },
+        },
+      }),
       this.getWorkoutCount(where),
     ]);
 
     return {
-      entities: records.map((record) =>
-        this.createEntityFromDocument(record as Workout),
-      ),
+      entities: records,
       currentPage: query?.page,
       totalPages: this.calculateWorkoutsPage(workoutCount, take),
       itemsPerPage: take,

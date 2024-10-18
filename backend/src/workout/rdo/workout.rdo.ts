@@ -1,6 +1,7 @@
 import { Expose } from 'class-transformer';
 import { Gender } from 'src/shared/types/gender.enum';
 import { Level } from 'src/shared/types/level.enum';
+import { Review } from 'src/shared/types/review.interface';
 import { Time } from 'src/shared/types/time.enum';
 import { WorkoutType } from 'src/shared/types/workout-type.enum';
 
@@ -43,4 +44,7 @@ export class WorkoutRdo {
 
   @Expose()
   isSpecial: boolean;
+
+  @Expose()
+  review: Review[];
 }

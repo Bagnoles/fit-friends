@@ -15,11 +15,7 @@ export class WorkoutController {
   public async index(@Query() query: WorkoutQuery) {
     const workoutsWithPagination =
       await this.workoutService.getAllWorkouts(query);
-    const result = {
-      ...workoutsWithPagination,
-      entities: workoutsWithPagination.entities.map((item) => item.toPOJO()),
-    };
-    return fillDto(WorkoutWithPaginationRdo, result);
+    return fillDto(WorkoutWithPaginationRdo, workoutsWithPagination);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -1,12 +1,13 @@
+import { UserInfo } from './user.type';
+
 export type Review = {
   id: string;
-  userId: string;
+  user: UserInfo;
   rating: number;
   text: string;
 }
 
 export type CreateReviewDto = {
-  //userId: string;
   workoutId: string;
   rating: number;
   text: string;

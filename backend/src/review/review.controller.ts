@@ -22,10 +22,7 @@ export class ReviewController {
   @Get('/:workoutId')
   public async index(@Param('workoutId') workoutId: string) {
     const result = await this.reviewService.getReviews(workoutId);
-    return fillDto(
-      ReviewRdo,
-      result.map((item) => item.toPOJO()),
-    );
+    return fillDto(ReviewRdo, result);
   }
 
   @UseGuards(JwtAuthGuard)

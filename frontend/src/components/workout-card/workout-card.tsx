@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Workout } from '../../types/workout.type';
 import { WORKOUT_TYPES_NAME } from '../../types/workout-type.enum';
 import { AppRoutes } from '../../const';
+import { getAverageRating } from '../../utils';
 
 type WorkoutCardProps = {
   workout: Workout;
@@ -10,6 +11,7 @@ type WorkoutCardProps = {
 
 function WorkoutCard({workout, className}: WorkoutCardProps):JSX.Element {
   const { id, calories, description, imageUrl, price, name, type } = workout;
+  const rating = getAverageRating(workout);
 
   return (
     <li className={className}>
@@ -35,7 +37,7 @@ function WorkoutCard({workout, className}: WorkoutCardProps):JSX.Element {
             <div className="thumbnail-training__rate">
               <svg width="16" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-star"></use>
-              </svg><span className="thumbnail-training__rate-value">5</span>
+              </svg><span className="thumbnail-training__rate-value">{rating}</span>
             </div>
           </div>
           <div className="thumbnail-training__text-wrapper">

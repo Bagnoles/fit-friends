@@ -1,12 +1,12 @@
-import { IsEnum, IsInt, IsUUID, Min, Max } from 'class-validator';
+import { IsEnum, IsInt, Min, Max, IsString } from 'class-validator';
 import { PaymentType } from 'src/shared/types/payment-type.enum';
 import { PurchaseType } from 'src/shared/types/purchase-type.enum';
 
 export class CreateOrderDto {
-  @IsUUID()
+  @IsString()
   userId: string;
 
-  @IsUUID()
+  @IsString()
   serviceId: string;
 
   @IsEnum(PurchaseType)

@@ -17,7 +17,7 @@ export class ReviewRepository extends BasePostgresRepository<
     super(entityFactory, client);
   }
 
-  public async findAllByWorkoutId(workoutId: string): Promise<ReviewEntity[]> {
+  public async findAllByWorkoutId(workoutId: string) {
     const documents = await this.client.review.findMany({
       where: {
         workoutId,
@@ -26,9 +26,7 @@ export class ReviewRepository extends BasePostgresRepository<
         user: true,
       },
     });
-    return documents.map((document) =>
-      this.createEntityFromDocument(document as Review),
-    );
+    return documents;
   }
 
   public async save(entity: ReviewEntity): Promise<ReviewEntity> {

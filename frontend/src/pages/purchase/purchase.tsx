@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header/header';
 import PurchaseList from './purchase-list';
-import { AppRoutes } from '../../const';
+import { AppRoutes, DEFAULT_PAGE_LIMIT } from '../../const';
 import { useAppSelector } from '../../store/hooks';
 import { getBalance } from '../../store/balance/balance-selectors';
 
@@ -36,7 +36,7 @@ function Purchase():JSX.Element {
               </div>
               { balance.length === 0 ? 'На балансе пользователя нет активных тренировок' : <PurchaseList data={balance} /> }
               <div className="show-more my-purchases__show-more">
-                <button className="btn show-more__button show-more__button--more" type="button">Показать еще</button>
+                <button className="btn show-more__button show-more__button--more" type="button" disabled={balance.length <= DEFAULT_PAGE_LIMIT}>Показать еще</button>
                 <button className="btn show-more__button show-more__button--to-top" type="button">Вернуться в начало</button>
               </div>
             </div>

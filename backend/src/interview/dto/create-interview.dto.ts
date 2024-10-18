@@ -3,7 +3,7 @@ import {
   IsBoolean,
   IsEnum,
   IsInt,
-  IsUUID,
+  IsString,
   Max,
   Min,
 } from 'class-validator';
@@ -12,7 +12,7 @@ import { Time } from 'src/shared/types/time.enum';
 import { WorkoutType } from 'src/shared/types/workout-type.enum';
 
 export class CreateInterviewDto {
-  @IsUUID()
+  @IsString()
   userId: string;
 
   @IsEnum(Level)

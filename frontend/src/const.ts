@@ -29,3 +29,5 @@ export enum APIRoute {
   Order = '/orders',
   Balance = '/balance',
 }
+
+export const DEFAULT_PAGE_LIMIT = 6;
