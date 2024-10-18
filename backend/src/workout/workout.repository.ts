@@ -7,6 +7,7 @@ import { WorkoutFactory } from './workout.factory';
 import { PrismaClientService } from 'src/prisma-client/prisma-client.service';
 import { WorkoutQuery } from './workout.query';
 import { PaginationResult } from 'src/shared/types/pagination.interface';
+import { WorkoutType } from 'src/shared/types/workout-type.enum';
 
 @Injectable()
 export class WorkoutRepository extends BasePostgresRepository<
@@ -43,7 +44,10 @@ export class WorkoutRepository extends BasePostgresRepository<
     }
 
     if (query?.type) {
-      where.type = query.type;
+      const types = query.type[0].split(',') as WorkoutType[];
+      where.type = {
+        in: types,
+      };
     }
 
     const [records, workoutCount] = await Promise.all([

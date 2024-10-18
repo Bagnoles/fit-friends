@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsEnum, IsNumber, IsOptional } from 'class-validator';
+import { IsArray, IsEnum, IsNumber, IsOptional } from 'class-validator';
 import { SortDirection } from 'src/shared/types/sort-direction.enum';
 import { SortType } from 'src/shared/types/sort-type.enum';
 import { WorkoutType } from 'src/shared/types/workout-type.enum';
@@ -7,7 +7,7 @@ import { WorkoutType } from 'src/shared/types/workout-type.enum';
 const DEFAULT_LIMIT = 6;
 const DEFAULT_SORT_TYPE = SortType.Price;
 const DEFAULT_SORT_DIRECTION = SortDirection.Desc;
-export const DEFAULT_PAGE_COUNT = 1;
+const DEFAULT_PAGE_COUNT = 1;
 
 export class WorkoutQuery {
   @Transform(({ value }) => +value || DEFAULT_LIMIT)
@@ -27,7 +27,7 @@ export class WorkoutQuery {
   @IsOptional()
   public page: number = DEFAULT_PAGE_COUNT;
 
-  @IsEnum(WorkoutType)
+  @IsArray()
   @IsOptional()
-  public type: WorkoutType;
+  public type: WorkoutType[];
 }

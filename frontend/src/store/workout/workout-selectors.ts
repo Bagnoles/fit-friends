@@ -1,9 +1,11 @@
 import { State } from '..';
 import { NameSpace } from '../../const';
+import { PaginationResult } from '../../types/pagination.interface';
 import { Review } from '../../types/review.type';
 import { Workout } from '../../types/workout.type';
 
-export const getWorkouts = (state: Pick<State, NameSpace.Workout>): Workout[] => state[NameSpace.Workout].workouts.data;
+export const getWorkouts = (state: Pick<State, NameSpace.Workout>): Workout[] => state[NameSpace.Workout].workouts.data.entities;
+export const getWorkoutsWithPagination = (state: Pick<State, NameSpace.Workout>): PaginationResult<Workout> => state[NameSpace.Workout].workouts.data;
 export const getWorkoutErrorStatus = (state: Pick<State, NameSpace.Workout>): boolean => state[NameSpace.Workout].workouts.isError;
 export const getWorkoutLoadingStatus = (state: Pick<State, NameSpace.Workout>): boolean => state[NameSpace.Workout].workouts.isLoading;
 

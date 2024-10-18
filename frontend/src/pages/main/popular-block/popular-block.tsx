@@ -34,7 +34,7 @@ function PopularBlock():JSX.Element {
           </button>
         </div>
       </div>
-      <PopularList workouts={workouts} />
+      <PopularList workouts={workouts.slice(0,4)} />
     </div>
   );
 }

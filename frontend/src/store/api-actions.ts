@@ -9,6 +9,8 @@ import { Workout } from '../types/workout.type';
 import { CreateReviewDto, Review } from '../types/review.type';
 import { CreateOrderDto, Order } from '../types/order.type';
 import { Balance } from '../types/balance.type';
+import { PaginationResult } from '../types/pagination.interface';
+import { WorkoutQuery } from '../types/workout-query.type';
 
 const createAppAsyncThunk = createAsyncThunk.withTypes<{
   state: State;
@@ -61,9 +63,13 @@ export const refreshTokens = createAppAsyncThunk<{accessToken: string, refreshTo
   }
 );
 
-export const fetchWorkouts = createAppAsyncThunk<Workout[], undefined>('workouts/fetchWorkouts',
-  async (_arg, {extra: api}) => {
-    const {data} = await api.get<Workout[]>(APIRoute.Workout);
+export const fetchWorkouts = createAppAsyncThunk<PaginationResult<Workout>, WorkoutQuery | undefined>('workouts/fetchWorkouts',
+  async (arg, {extra: api}) => {
+    if (arg) {
+      const {data} = await api.get<PaginationResult<Workout>>(`${APIRoute.Workout}?page=${arg.page}&sortType=${arg.sortType}&sortDirection=${arg.sortDirection}&type[]=${arg.type}`);
+      return data;
+    }
+    const {data} = await api.get<PaginationResult<Workout>>(APIRoute.Workout);
     return data;
   }
 );

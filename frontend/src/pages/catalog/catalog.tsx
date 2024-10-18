@@ -1,11 +1,72 @@
+import { useEffect, useState } from 'react';
 import Header from '../../components/header/header';
-import { useAppSelector } from '../../store/hooks';
-import { getWorkouts } from '../../store/workout/workout-selectors';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getWorkoutsWithPagination, getWorkoutErrorStatus, getWorkoutLoadingStatus } from '../../store/workout/workout-selectors';
 import FilterBlock from './filter-block/filter-block';
 import WorkoutList from './workout-list/workout-list';
+import { fetchWorkouts } from '../../store/api-actions';
+import { WorkoutType } from '../../types/workout-type.enum';
+import { SortDirection } from '../../types/sort-direction.enum';
+import { SortType } from '../../types/sort-type.enum';
+
+const DEFAULT_PAGE_LIMIT = 6;
+const MAX_PRICE = 10000;
+const MAX_CALORIES = 1000;
 
 function Catalog():JSX.Element {
-  const workouts = useAppSelector(getWorkouts);
+  const workoutsWithPagination = useAppSelector(getWorkoutsWithPagination);
+  const isServerError = useAppSelector(getWorkoutErrorStatus);
+  const isLoading = useAppSelector(getWorkoutLoadingStatus);
+
+  const dispatch = useAppDispatch();
+
+  const [page, setPage] = useState<number>(workoutsWithPagination.currentPage);
+  const [checkedTypes, setCheckedTypes] = useState<WorkoutType[]>(Object.values(WorkoutType));
+  const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.Desc);
+  const [sortType, _setSortType] = useState<SortType>(SortType.Price);
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(MAX_PRICE);
+  const [minCalories, setMinCalories] = useState<number>(0);
+  const [maxCalories, setMaxCalories] = useState<number>(MAX_CALORIES);
+
+  useEffect(() => {
+    dispatch(fetchWorkouts({
+      page,
+      sortDirection,
+      sortType,
+      type: checkedTypes
+    }))
+  }, [page, sortDirection, sortType, checkedTypes]);
+
+  const handlePageChange = () => {
+    setPage(page + 1);
+  }
+  const handleChangeCheckedTypes = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    if (checkedTypes.includes(evt.target.value as WorkoutType)) {
+      setCheckedTypes(checkedTypes.filter((item) => item !== evt.target.value));
+    } else {
+      setCheckedTypes([...checkedTypes, evt.target.value as WorkoutType]);
+    }
+  }
+  const handleSortDirectionChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setSortDirection(evt.target.value as SortDirection);
+  }
+  const handleMinPriceChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setMinPrice(+evt.target.value);
+  }
+  const handleMaxPriceChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setMaxPrice(+evt.target.value);
+  }
+  const handleMinCaloriesChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setMinCalories(+evt.target.value);
+  }
+  const handleMaxCaloriesChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setMaxCalories(+evt.target.value);
+  }
+
+  if (isServerError) {
+    return <p>Произошла ошибка. Обновите страницу.</p>
+  }
 
   return (
     <div className="wrapper">
@@ -15,11 +76,29 @@ function Catalog():JSX.Element {
           <div className="container">
             <div className="inner-page__wrapper">
               <h1 className="visually-hidden">Каталог тренировок</h1>
-              <FilterBlock />
+              <FilterBlock
+                checkedTypes={checkedTypes}
+                onTypeChange={handleChangeCheckedTypes}
+                onSortDirectionChange={handleSortDirectionChange}
+                sortDirection={sortDirection}
+                maxCalories={maxCalories}
+                maxPrice={maxPrice}
+                minCalories={minCalories}
+                minPrice={minPrice}
+                onMaxCaloriesChange={handleMaxCaloriesChange}
+                onMaxPriceChange={handleMaxPriceChange}
+                onMinCaloriesChange={handleMinCaloriesChange}
+                onMinPriceChange={handleMinPriceChange}
+              />
               <div className="training-catalog">
-                <WorkoutList workouts={workouts} />
+                {isLoading ? 'Идет загрузка......' : <WorkoutList workouts={workoutsWithPagination.entities} />}
                 <div className="show-more training-catalog__show-more">
-                  <button className="btn show-more__button show-more__button--more" type="button">Показать еще</button>
+                  <button
+                    className="btn show-more__button show-more__button--more"
+                    type="button"
+                    disabled={workoutsWithPagination.totalItems <= DEFAULT_PAGE_LIMIT || workoutsWithPagination.currentPage === workoutsWithPagination.totalPages}
+                    onClick={handlePageChange}
+                  >Показать еще</button>
                   <button className="btn show-more__button show-more__button--to-top" type="button">Вернуться в начало</button>
                 </div>
               </div>

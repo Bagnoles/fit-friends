@@ -3,10 +3,11 @@ import { Workout } from '../../types/workout.type';
 import { NameSpace } from '../../const';
 import { addReview, fetchWorkoutReviews, fetchWorkouts } from '../api-actions';
 import { Review } from '../../types/review.type';
+import { PaginationResult } from '../../types/pagination.interface';
 
 type WorkoutInitialStateType = {
   workouts: {
-    data: Workout[];
+    data: PaginationResult<Workout>;
     isLoading: boolean;
     isError: boolean;
   };
@@ -19,7 +20,13 @@ type WorkoutInitialStateType = {
 
 const initialState: WorkoutInitialStateType = {
   workouts: {
-    data: [],
+    data: {
+      entities: [],
+      totalPages: 0,
+      totalItems: 0,
+      currentPage: 0,
+      itemsPerPage: 0
+    },
     isLoading: false,
     isError: false
   },

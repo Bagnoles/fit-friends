@@ -1,10 +1,14 @@
+import { useAppSelector } from '../../../store/hooks';
+import { getWorkouts } from '../../../store/workout/workout-selectors';
 import DiscountList from './discount-list';
 
 function DiscountBlock():JSX.Element {
+  const workouts = useAppSelector(getWorkouts).filter((item) => item.isSpecial);
+
   return (
     <div className="special-offers__wrapper">
       <h2 className="visually-hidden">Специальные предложения</h2>
-      <DiscountList />
+      <DiscountList data={workouts.slice(0,3)} />
       <div className="thumbnail-spec-gym">
         <div className="thumbnail-spec-gym__image">
           <picture>
