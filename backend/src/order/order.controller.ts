@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
   Param,
   Post,
   UseGuards,
@@ -11,7 +12,9 @@ import { InjectUserIdInterceptor } from 'src/shared/interceptors/inject-user-id.
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('orders')
 @Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -23,6 +26,14 @@ export class OrderController {
     return result;
   }
 
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Order created',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Access denied',
+  })
   @UseInterceptors(InjectUserIdInterceptor)
   @UseGuards(JwtAuthGuard)
   @Post('/')

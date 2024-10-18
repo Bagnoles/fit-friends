@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InterviewService } from './interview.service';
 import { CreateInterviewDto } from './dto/create-interview.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('interview')
 @Controller('interview')
 export class InterviewController {
   constructor(private readonly interviewService: InterviewService) {}
