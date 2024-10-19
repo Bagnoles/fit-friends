@@ -1,28 +1,25 @@
 import { useAppSelector } from '../../../store/hooks';
 import { getWorkouts } from '../../../store/workout/workout-selectors';
-import SpecialList from './special-list';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import SpecialItem from './special-item';
+import SpecialSliderButtons from './special-slider-buttons';
 
 function SpecialBlock():JSX.Element {
   const workouts = useAppSelector(getWorkouts);
 
   return (
     <div className="special-for-you__wrapper">
-      <div className="special-for-you__title-wrapper">
+      <Swiper
+        spaceBetween={20}
+        slidesPerView={3}
+      >
+      <div className="special-for-you__title-wrapper" slot='container-start'>
         <h2 className="special-for-you__title">Специально подобрано для вас</h2>
-        <div className="special-for-you__controls">
-          <button className="btn-icon special-for-you__control" type="button" aria-label="previous">
-            <svg width="16" height="14" aria-hidden="true">
-              <use xlinkHref="#arrow-left"></use>
-            </svg>
-          </button>
-          <button className="btn-icon special-for-you__control" type="button" aria-label="next">
-            <svg width="16" height="14" aria-hidden="true">
-              <use xlinkHref="#arrow-right"></use>
-            </svg>
-          </button>
-        </div>
+        <SpecialSliderButtons />
       </div>
-      <SpecialList workouts={workouts.slice(0,3)} />
+      {workouts.slice(0,9).map((item) => <SwiperSlide key={item.id}><SpecialItem key={item.id} workout={item} /></SwiperSlide>)}
+      </Swiper>
     </div>
   );
 }

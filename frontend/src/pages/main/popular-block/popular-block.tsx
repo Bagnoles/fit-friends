@@ -1,8 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../store/hooks';
 import { getWorkouts } from '../../../store/workout/workout-selectors';
-import PopularList from './popular-list';
 import { AppRoutes } from '../../../const';
+import PopularSliderButtons from './popular-slider-buttons';
+import WorkoutCard from '../../../components/workout-card/workout-card';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import { getAverageRating } from '../../../utils';
 
 function PopularBlock():JSX.Element {
   const navigate = useNavigate();
@@ -14,27 +18,25 @@ function PopularBlock():JSX.Element {
 
   return (
     <div className="popular-trainings__wrapper">
-      <div className="popular-trainings__title-wrapper">
+      <Swiper
+        spaceBetween={20}
+        slidesPerView={4}
+      >
+      <div className="popular-trainings__title-wrapper" slot='container-start'>
         <h2 className="popular-trainings__title">Популярные тренировки</h2>
         <button className="btn-flat popular-trainings__button" type="button" onClick={handleWorkoutsButtonClick}><span>Смотреть все</span>
           <svg width="14" height="10" aria-hidden="true">
             <use xlinkHref="#arrow-right"></use>
           </svg>
         </button>
-        <div className="popular-trainings__controls">
-          <button className="btn-icon popular-trainings__control" type="button" aria-label="previous">
-            <svg width="16" height="14" aria-hidden="true">
-              <use xlinkHref="#arrow-left"></use>
-            </svg>
-          </button>
-          <button className="btn-icon popular-trainings__control" type="button" aria-label="next">
-            <svg width="16" height="14" aria-hidden="true">
-              <use xlinkHref="#arrow-right"></use>
-            </svg>
-          </button>
-        </div>
+        <PopularSliderButtons />
       </div>
-      <PopularList workouts={workouts.slice(0,4)} />
+      {workouts
+        .slice()
+        .sort((first, second) => getAverageRating(second) - getAverageRating(first))
+        .map((item) => <SwiperSlide key={item.id}><WorkoutCard className='popular-trainings__item' key={item.id} workout={item} /></SwiperSlide>)
+      }
+      </Swiper>
     </div>
   );
 }
