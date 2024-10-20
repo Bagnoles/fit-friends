@@ -1,9 +1,26 @@
+import { useEffect } from 'react';
 import Header from '../../components/header/header';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getWorkoutLoadingStatus, getWorkoutErrorStatus, getWorkouts } from '../../store/workout/workout-selectors';
 import DiscountBlock from './discount-block/discount-block';
 import PopularBlock from './popular-block/popular-block';
 import SpecialBlock from './special-block/special-block';
+import { fetchWorkouts } from '../../store/api-actions';
 
 function Main():JSX.Element {
+  const isLoading = useAppSelector(getWorkoutLoadingStatus);
+  const isError = useAppSelector(getWorkoutErrorStatus);
+  const workouts = useAppSelector(getWorkouts);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchWorkouts());
+  }, []);
+
+  if (isError) {
+    return <p>Произошла ошибка. Обновите страницу</p>;
+  }
+
   return (
     <div className="wrapper">
       <Header activePage='main' />
@@ -11,17 +28,20 @@ function Main():JSX.Element {
         <h1 className="visually-hidden">FitFriends — Время находить тренировки, спортзалы и друзей спортсменов</h1>
         <section className="special-for-you">
           <div className="container">
-            <SpecialBlock />
+            { isLoading ? 'Идет загрузка....' : <SpecialBlock /> }
+            { workouts.length === 0 && !isLoading && <p>Скоро здесь появится что-то полезное</p> }
           </div>
         </section>
         <section className="special-offers">
           <div className="container">
-            <DiscountBlock />
+          { isLoading ? 'Идет загрузка....' : <DiscountBlock /> }
+          { workouts.length === 0 && !isLoading && <p>Скоро здесь появится что-то полезное</p> }
           </div>
         </section>
         <section className="popular-trainings">
           <div className="container">
-            <PopularBlock />
+          { isLoading ? 'Идет загрузка....' : <PopularBlock /> }
+          { workouts.length === 0 && !isLoading && <p>Скоро здесь появится что-то полезное</p> }
           </div>
         </section>
         <section className="look-for-company">

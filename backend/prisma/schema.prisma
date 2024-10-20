@@ -29,7 +29,7 @@ model User {
   balance      Balance[]
   review       Review[]
   order        Order[]
-  token        RefreshSession?
+  token        RefreshSession[]
 
   @@map("users")
 }
@@ -157,7 +157,7 @@ enum Payment {
 
 model RefreshSession {
   id        String   @id @default(uuid())
-  userId    String   @map("user_id") @unique()
+  userId    String   @map("user_id")
   tokenId   String   @map("token_id")
   createdAt DateTime @default(now()) @map("created_at")
   expiresIn DateTime @map("expires_at")

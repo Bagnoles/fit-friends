@@ -5,6 +5,8 @@ import { useAppDispatch } from '../../store/hooks';
 import { addOrder, addToBalance } from '../../store/api-actions';
 import { PurchaseType } from '../../types/purchase-type.enum';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '../../const';
 
 type PopupBuyProps = {
   onPopupClose: () => void;
@@ -18,6 +20,7 @@ function PopupBuy({onPopupClose, workout}: PopupBuyProps):JSX.Element {
   const [payment, setPayment] = useState<PaymentType>(PaymentType.Visa);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleAddWorkout = () => {
     setCount(count + 1);
@@ -48,6 +51,7 @@ function PopupBuy({onPopupClose, workout}: PopupBuyProps):JSX.Element {
       if (response.meta.requestStatus === 'fulfilled') {
         dispatch(addToBalance({ workoutId: id, count }));
         onPopupClose();
+        navigate(`${AppRoutes.Workout}/${id}`);
       }
     });
   }

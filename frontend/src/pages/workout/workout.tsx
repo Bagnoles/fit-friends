@@ -8,16 +8,18 @@ import { WORKOUT_TYPES_NAME } from '../../types/workout-type.enum';
 import { TIME_INTERVALS } from '../../types/time.enum';
 import { Gender } from '../../types/gender.enum';
 import { useEffect, useState } from 'react';
-import { fetchWorkoutReviews } from '../../store/api-actions';
+import { fetchUserBalance, fetchWorkoutReviews } from '../../store/api-actions';
 import PopupReview from '../../components/popup-review/popup-review';
 import PopupBuy from '../../components/popup-buy/popup-buy';
 import { getBalance } from '../../store/balance/balance-selectors';
 import { getAverageRating } from '../../utils';
+import { getUserInfo } from '../../store/user/user-selectors';
 
 function Workout():JSX.Element {
   const { id } = useParams();
   const workout = useAppSelector(getWorkouts).find((item) => item.id === id);
   const userBalance = useAppSelector(getBalance);
+  const userInfo = useAppSelector(getUserInfo);
 
   if (!workout) {
     return <NotFound />;
@@ -32,8 +34,9 @@ function Workout():JSX.Element {
   const isWorkoutInBalance = !!userBalance.find((item) => item.workout?.id === workout.id);
 
   useEffect(() => {
-    if (id) {
+    if (id && userInfo) {
       dispatch(fetchWorkoutReviews(id));
+      dispatch(fetchUserBalance(userInfo.id));
     }
   }, []);
 
@@ -41,15 +44,19 @@ function Workout():JSX.Element {
 
   const handleOpenReviewPopup = () => {
     setShowReviewPopup(true);
+    document.body.style.overflow = 'hidden';
   }
   const handleCloseReviewPopup = () => {
     setShowReviewPopup(false);
+    document.body.style.overflow = '';
   }
   const handleOpenBuyPopup = () => {
     setShowBuyPopup(true);
+    document.body.style.overflow = 'hidden';
   }
   const handleCloseBuyPopup = () => {
     setShowBuyPopup(false);
+    document.body.style.overflow = '';
   }
 
   const handleWorkoutStart = () => {

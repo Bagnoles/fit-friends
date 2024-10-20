@@ -29,14 +29,16 @@ export class ReviewRepository extends BasePostgresRepository<
     return documents;
   }
 
-  public async save(entity: ReviewEntity): Promise<ReviewEntity> {
+  public async save(entity: ReviewEntity) {
     const pojoEntity = entity.toPOJO();
     const document = await this.client.review.create({
       data: {
         ...pojoEntity,
       },
+      include: {
+        user: true,
+      },
     });
-    //entity.id = document.id;
-    return this.createEntityFromDocument(document);
+    return document;
   }
 }
