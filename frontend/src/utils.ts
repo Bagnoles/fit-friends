@@ -1,3 +1,5 @@
+import { IMAGE_PATH } from './const';
+import { File } from './types/file.type';
 import { Workout } from './types/workout.type';
 
 export const getAverageRating = (workout: Workout) => {
@@ -6,3 +8,5 @@ export const getAverageRating = (workout: Workout) => {
   }
   return Math.round(workout.review.reduce((total, item) => total + item.rating, 0) / workout.review.length);
 }
+
+export const getImagePath = (image: File) => IMAGE_PATH + image.subDirectory+ '/' + image.hashName;

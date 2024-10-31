@@ -9,6 +9,7 @@ import { JwtAccessStrategy } from './strategies/jwt-access.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { getJwtOptions } from 'src/shared/config/get-jwt-options';
+import { FileUploaderModule } from 'src/file-uploader/file-uploader.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { getJwtOptions } from 'src/shared/config/get-jwt-options';
       useFactory: getJwtOptions,
     }),
     RefreshTokenModule,
+    FileUploaderModule,
   ],
   controllers: [AuthController],
   providers: [

@@ -81,4 +81,6 @@ export class CreateUserDto {
   })
   @IsString()
   imageUrl: string;
+
+  avatarId: string;
 }

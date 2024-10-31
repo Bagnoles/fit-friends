@@ -30,6 +30,7 @@ model User {
   review       Review[]
   order        Order[]
   token        RefreshSession[]
+  avatarId     String?    @map("avatar_id")
 
   @@map("users")
 }
@@ -164,4 +165,17 @@ model RefreshSession {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("refresh_sessions")
+}
+
+model File {
+  id              String    @id @default(uuid())
+  originalName    String    @map("original_name")
+  hashName        String    @map("hash_name")
+  subDirectory    String    @map("sub_directory")
+  mimetype        String 
+  path            String   
+  size            Float   
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@map("files")
 }

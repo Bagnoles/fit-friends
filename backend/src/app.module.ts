@@ -9,6 +9,8 @@ import { BalanceModule } from './balance/balance.module';
 import { ReviewModule } from './review/review.module';
 import { OrderModule } from './order/order.module';
 import { InterviewModule } from './interview/interview.module';
+import fileConfig from './shared/config/file.config';
+import { FileUploaderModule } from './file-uploader/file-uploader.module';
 
 @Module({
   imports: [
@@ -19,10 +21,11 @@ import { InterviewModule } from './interview/interview.module';
     ReviewModule,
     OrderModule,
     InterviewModule,
+    FileUploaderModule,
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [applicationConfig, jwtConfig],
+      load: [applicationConfig, jwtConfig, fileConfig],
     }),
   ],
   controllers: [],

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { File } from 'src/shared/types/file.interface';
 
 export class UserRdo {
   @ApiProperty({
@@ -65,4 +66,7 @@ export class UserRdo {
   })
   @Expose()
   imageUrl: string;
+
+  @Expose()
+  avatar: File;
 }

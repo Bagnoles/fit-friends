@@ -31,3 +31,5 @@ export enum APIRoute {
 }
 
 export const DEFAULT_PAGE_LIMIT = 6;
+
+export const IMAGE_PATH = 'http://localhost:3000/static/';

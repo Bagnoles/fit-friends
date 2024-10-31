@@ -20,7 +20,7 @@ const createAppAsyncThunk = createAsyncThunk.withTypes<{
 
 export const registerAction = createAppAsyncThunk<UserInfo, CreateUserDto>('user/register',
   async (dto, {extra: api}) => {
-    const {data} = await api.post<UserInfo>(`${APIRoute.User}/register`, dto);
+    const {data} = await api.post<UserInfo>(`${APIRoute.User}/register`, dto, { headers: { 'Content-Type': 'multipart/form-data' } });
     return data;
   }
 );

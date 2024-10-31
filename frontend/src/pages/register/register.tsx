@@ -17,6 +17,7 @@ function Register():JSX.Element {
   const [birthday, setBirthday] = useState<string>('');
   const [gender, setGender] = useState<Gender>(Gender.Whatever);
   const [location, setLocation] = useState<Subway | null>(null);
+  const [file, setFile] = useState<File | undefined>();
 
   const selectRef = useRef<HTMLDivElement | null>(null);
 
@@ -48,6 +49,12 @@ function Register():JSX.Element {
     selectRef.current?.classList.add('not-empty');
   }
 
+  const handleFileChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    if (evt.target.files) {
+      setFile(evt.target.files[0]);
+    }
+  };
+
   const handleSubmitRegisterForm = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const newUser = {
@@ -60,6 +67,7 @@ function Register():JSX.Element {
       avatarUrl: 'img/content/user-photo-2.png',
       imageUrl: 'img/content/user-photo-2.png',
       description: 'Введите описание пользователя....',
+      file
     }
     dispatch(registerAction(newUser))
       .then((response) => {
@@ -86,14 +94,16 @@ function Register():JSX.Element {
                     <div className="sign-up__load-photo">
                       <div className="input-load-avatar">
                         <label>
-                          <input className="visually-hidden" type="file" accept="image/png, image/jpeg"/><span className="input-load-avatar__btn">
+                          <input className="visually-hidden" type="file" accept="image/png, image/jpeg" onChange={handleFileChange} />
+                          <span className="input-load-avatar__btn">
                             <svg width="20" height="20" aria-hidden="true">
                               <use xlinkHref="#icon-import"></use>
-                            </svg></span>
+                            </svg>
+                          </span>
                         </label>
                       </div>
                       <div className="sign-up__description">
-                        <h2 className="sign-up__legend">Загрузите фото профиля</h2><span className="sign-up__text">JPG, PNG, оптимальный размер 100&times;100&nbsp;px</span>
+                        <h2 className="sign-up__legend">{file ? 'Аватар загружен' : 'Загрузите фото профиля'}</h2><span className="sign-up__text">JPG, PNG, оптимальный размер 100&times;100&nbsp;px</span>
                       </div>
                     </div>
                     <div className="sign-up__data">

@@ -15,6 +15,7 @@ export class UserEntity extends Entity implements StorableEntity<User> {
   description: string;
   subway: Subway;
   imageUrl: string;
+  avatarId: string;
 
   constructor(user?: User) {
     super();
@@ -36,6 +37,7 @@ export class UserEntity extends Entity implements StorableEntity<User> {
     this.description = user.description;
     this.subway = user.subway;
     this.imageUrl = user.imageUrl;
+    this.avatarId = user.avatarId;
   }
 
   public toPOJO(): User {
@@ -50,6 +52,7 @@ export class UserEntity extends Entity implements StorableEntity<User> {
       description: this.description,
       subway: this.subway,
       imageUrl: this.imageUrl,
+      avatarId: this.avatarId,
     };
   }
 

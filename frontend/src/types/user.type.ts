@@ -1,3 +1,4 @@
+import { File } from './file.type';
 import { Gender } from './gender.enum';
 import { Interview } from './interview.type';
 import { Subway } from './subway.enum';
@@ -13,6 +14,7 @@ export type UserInfo = {
   subway: Subway;
   imageUrl: string;
   interview: Interview | null;
+  avatar?: File;
 }
 
 export type CreateUserDto = {

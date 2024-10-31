@@ -6,6 +6,7 @@ import { LEVEL_NAMES } from '../../../types/level.enum';
 import { UserInfo } from '../../../types/user.type';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../../const';
+import { getImagePath } from '../../../utils';
 
 type UserFormProps = {
   userInfo: UserInfo;
@@ -15,6 +16,7 @@ type UserFormProps = {
 
 function UserForm({userInfo, isEdit, onEditButtonClick}: UserFormProps):JSX.Element {
   const navigate = useNavigate();
+  const imagePath = userInfo.avatar ? getImagePath(userInfo.avatar) : userInfo.avatarUrl;
 
   if (!userInfo.interview) {
     navigate(AppRoutes.Interview);
@@ -31,7 +33,10 @@ function UserForm({userInfo, isEdit, onEditButtonClick}: UserFormProps):JSX.Elem
       <div className="user-info__header">
         <div className="input-load-avatar">
           <label>
-            <input className="visually-hidden" type="file" name="user-photo-1" accept="image/png, image/jpeg" /><span className="input-load-avatar__avatar"><img src={userInfo.imageUrl} srcSet={userInfo.imageUrl} width="98" height="98" alt="user photo" /></span>
+            <input className="visually-hidden" type="file" name="user-photo-1" accept="image/png, image/jpeg" />
+            <span className="input-load-avatar__avatar">
+              <img src={imagePath} srcSet={imagePath} width="98" height="98" alt="user photo" />
+            </span>
           </label>
         </div>
       </div>

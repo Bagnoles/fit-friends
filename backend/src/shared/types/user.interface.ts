@@ -12,4 +12,5 @@ export interface User {
   description: string;
   subway: Subway;
   imageUrl: string;
+  avatarId: string;
 }

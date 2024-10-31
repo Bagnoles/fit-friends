@@ -9,7 +9,10 @@ import {
   Patch,
   Param,
   Get,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -22,6 +25,7 @@ import { UserRdo } from './rdo/user.rdo';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FileUploaderService } from 'src/file-uploader/file-uploader.service';
 
 interface RequestWithUser {
   user?: UserEntity;
@@ -33,7 +37,10 @@ interface RequestWithTokenPayload {
 @ApiTags('users')
 @Controller('users')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly fileService: FileUploaderService,
+  ) {}
 
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -44,9 +51,24 @@ export class AuthController {
     description: 'User already exist',
   })
   @Post('register')
-  public async create(@Body() dto: CreateUserDto) {
-    const user = await this.authService.register(dto);
-    return fillDto(UserRdo, user.toPOJO());
+  @UseInterceptors(FileInterceptor('file'))
+  public async create(
+    @Body() dto: CreateUserDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    let avatarId = '';
+    if (file) {
+      const fileEntity = await this.fileService.saveFile(file);
+      avatarId = fileEntity.id;
+    }
+    const user = await this.authService.register({ ...dto, avatarId });
+    const result = user.avatarId
+      ? fillDto(UserRdo, {
+          ...user.toPOJO(),
+          avatar: (await this.fileService.getFile(user.avatarId)).toPOJO(),
+        })
+      : fillDto(UserRdo, user.toPOJO());
+    return result;
   }
 
   @ApiResponse({
@@ -107,6 +129,12 @@ export class AuthController {
   @Get('/:userId')
   public async getInfo(@Param('userId') id: string) {
     const user = await this.authService.getUserById(id);
-    return fillDto(UserRdo, user.toPOJO());
+    const result = user.avatarId
+      ? fillDto(UserRdo, {
+          ...user.toPOJO(),
+          avatar: (await this.fileService.getFile(user.avatarId)).toPOJO(),
+        })
+      : fillDto(UserRdo, user.toPOJO());
+    return result;
   }
 }
