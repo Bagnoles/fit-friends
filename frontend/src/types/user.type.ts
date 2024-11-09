@@ -1,6 +1,7 @@
 import { File } from './file.type';
 import { Gender } from './gender.enum';
-import { Interview } from './interview.type';
+import { CoachInterview, Interview } from './interview.type';
+import { Role } from './role.enum';
 import { Subway } from './subway.enum';
 
 export type UserInfo = {
@@ -13,8 +14,9 @@ export type UserInfo = {
   description: string;
   subway: Subway;
   imageUrl: string;
-  interview: Interview | null;
+  interview: Interview | CoachInterview | null;
   avatar?: File;
+  role: Role;
 }
 
 export type CreateUserDto = {
@@ -27,6 +29,7 @@ export type CreateUserDto = {
   description: string;
   subway: Subway;
   imageUrl: string;
+  role: Role;
 }
 
 export type LoginUserDto = {

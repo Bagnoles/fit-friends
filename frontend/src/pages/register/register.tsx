@@ -8,6 +8,7 @@ import { loginAction, registerAction } from '../../store/api-actions';
 import { Gender } from '../../types/gender.enum';
 import Radio from '../../components/radio/radio';
 import { LOCATION_NAMES, Subway } from '../../types/subway.enum';
+import { Role } from '../../types/role.enum';
 
 
 function Register():JSX.Element {
@@ -18,6 +19,7 @@ function Register():JSX.Element {
   const [gender, setGender] = useState<Gender>(Gender.Whatever);
   const [location, setLocation] = useState<Subway | null>(null);
   const [file, setFile] = useState<File | undefined>();
+  const [role, setRole] = useState<Role>(Role.Customer);
 
   const selectRef = useRef<HTMLDivElement | null>(null);
 
@@ -38,6 +40,9 @@ function Register():JSX.Element {
   };
   const handleGenderChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setGender(evt.target.value as Gender);
+  };
+  const handleRoleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setRole(evt.target.value as Role);
   };
 
   const handleSelectButtonClick = () => {
@@ -67,7 +72,8 @@ function Register():JSX.Element {
       avatarUrl: 'img/content/user-photo-2.png',
       imageUrl: 'img/content/user-photo-2.png',
       description: 'Введите описание пользователя....',
-      file
+      file,
+      role
     }
     dispatch(registerAction(newUser))
       .then((response) => {
@@ -161,7 +167,7 @@ function Register():JSX.Element {
                       <div className="role-selector sign-up__role-selector">
                         <div className="role-btn">
                           <label>
-                            <input className="visually-hidden" type="radio" name="role" value="coach" /><span className="role-btn__icon">
+                            <input className="visually-hidden" type="radio" name="role" value={Role.Coach} checked={role === Role.Coach} onChange={handleRoleChange} /><span className="role-btn__icon">
                               <svg width="12" height="13" aria-hidden="true">
                                 <use xlinkHref="#icon-cup"></use>
                               </svg></span><span className="role-btn__btn">Я хочу тренировать</span>
@@ -169,7 +175,7 @@ function Register():JSX.Element {
                         </div>
                         <div className="role-btn">
                           <label>
-                            <input className="visually-hidden" type="radio" name="role" value="sportsman" checked/><span className="role-btn__icon">
+                            <input className="visually-hidden" type="radio" name="role" value={Role.Customer} checked={role === Role.Customer} onChange={handleRoleChange} /><span className="role-btn__icon">
                               <svg width="12" height="13" aria-hidden="true">
                                 <use xlinkHref="#icon-weight"></use>
                               </svg></span><span className="role-btn__btn">Я хочу тренироваться</span>

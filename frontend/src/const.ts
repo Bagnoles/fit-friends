@@ -24,6 +24,7 @@ export enum NameSpace {
 export enum APIRoute {
   User = '/users',
   Interview = '/interview',
+  CoachInterview = '/coach/interview',
   Workout = '/workouts',
   Review = '/reviews',
   Order = '/orders',

@@ -61,6 +61,13 @@ export class UserRdo {
   subway: string;
 
   @ApiProperty({
+    description: 'User role',
+    example: 'Customer',
+  })
+  @Expose()
+  role: string;
+
+  @ApiProperty({
     description: 'User image URL',
     example: 'img/content/user-photo-2.png',
   })

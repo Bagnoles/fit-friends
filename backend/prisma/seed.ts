@@ -7,6 +7,7 @@ import {
   Type,
 } from '@prisma/client';
 import { generateHash } from '../src/shared/utils/hasher';
+import { Role } from 'src/shared/types/role.enum';
 
 const USERS_UUIDS = [
   '6d308040-96a2-4162-bea6-2338e9976540',
@@ -35,6 +36,7 @@ function getUsers() {
       description:
         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
       subway: 'Pionerskaya',
+      role: 'Customer',
     },
     {
       id: USERS_UUIDS[1],
@@ -46,6 +48,7 @@ function getUsers() {
       description:
         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
       subway: 'Petrogradskaya',
+      role: 'Customer',
     },
     {
       id: USERS_UUIDS[2],
@@ -57,6 +60,7 @@ function getUsers() {
       description:
         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
       subway: 'Udelnaya',
+      role: 'Customer',
     },
     {
       id: USERS_UUIDS[3],
@@ -68,6 +72,7 @@ function getUsers() {
       description:
         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
       subway: 'Zvezdnaya',
+      role: 'Customer',
     },
     {
       id: USERS_UUIDS[4],
@@ -79,6 +84,7 @@ function getUsers() {
       description:
         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
       subway: 'Sportivnaya',
+      role: 'Customer',
     },
   ];
 }
@@ -179,6 +185,7 @@ async function seedDb(prismaClient: PrismaClient) {
         name: user.name,
         subway: user.subway as Subway,
         passwordHash: await generateHash(user.password),
+        role: user.role as Role,
       },
     });
   }

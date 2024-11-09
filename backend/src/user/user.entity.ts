@@ -1,6 +1,7 @@
 import { Entity } from 'src/shared/database/entity';
 import { StorableEntity } from 'src/shared/database/storable-entity.interface';
 import { Gender } from 'src/shared/types/gender.enum';
+import { Role } from 'src/shared/types/role.enum';
 import { Subway } from 'src/shared/types/subway.enum';
 import { User } from 'src/shared/types/user.interface';
 import { compareHash, generateHash } from 'src/shared/utils/hasher';
@@ -16,6 +17,7 @@ export class UserEntity extends Entity implements StorableEntity<User> {
   subway: Subway;
   imageUrl: string;
   avatarId: string;
+  role: Role;
 
   constructor(user?: User) {
     super();
@@ -38,6 +40,7 @@ export class UserEntity extends Entity implements StorableEntity<User> {
     this.subway = user.subway;
     this.imageUrl = user.imageUrl;
     this.avatarId = user.avatarId;
+    this.role = user.role;
   }
 
   public toPOJO(): User {
@@ -53,6 +56,7 @@ export class UserEntity extends Entity implements StorableEntity<User> {
       subway: this.subway,
       imageUrl: this.imageUrl,
       avatarId: this.avatarId,
+      role: this.role,
     };
   }
 

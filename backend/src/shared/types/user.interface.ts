@@ -1,4 +1,5 @@
 import { Gender } from './gender.enum';
+import { Role } from './role.enum';
 import { Subway } from './subway.enum';
 
 export interface User {
@@ -13,4 +14,5 @@ export interface User {
   subway: Subway;
   imageUrl: string;
   avatarId: string;
+  role: Role;
 }

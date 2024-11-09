@@ -14,25 +14,32 @@ datasource db {
 }
 
 model User {
-  id           String     @id @default(uuid())
-  name         String
-  email        String     @unique()
-  avatarUrl    String     @default("") @map("avatar_url")
-  passwordHash String     @map("password_hash")
-  gender       Gender
-  birthday     DateTime?
-  description  String
-  subway       Subway
-  imageUrl     String     @map("image_url")
-  createdAt    DateTime   @default(now()) @map("created_at")
-  interview    Interview?
-  balance      Balance[]
-  review       Review[]
-  order        Order[]
-  token        RefreshSession[]
-  avatarId     String?    @map("avatar_id")
+  id              String     @id @default(uuid())
+  name            String
+  email           String     @unique()
+  avatarUrl       String     @default("") @map("avatar_url")
+  passwordHash    String     @map("password_hash")
+  gender          Gender
+  birthday        DateTime?
+  description     String
+  subway          Subway
+  imageUrl        String     @map("image_url")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  interview       Interview?
+  coachInterview  CoachInterview? 
+  balance         Balance[]
+  review          Review[]
+  order           Order[]
+  token           RefreshSession[]
+  avatarId        String?    @map("avatar_id")
+  role            Role       
 
   @@map("users")
+}
+
+enum Role {
+  Customer
+  Coach
 }
 
 enum Gender {
@@ -61,6 +68,19 @@ model Interview {
   isReady        Boolean @map("is_ready")
 
   @@map("interviews")
+}
+
+model CoachInterview {
+  id             String  @id @default(uuid())
+  userId         String  @unique() @map("user_id")
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  level          Level
+  workoutTypes   Type[]  @map("workout_types")
+  coachingMerit  String  @map("coaching_merit")
+  certificateId  String  @map("certificate_id")
+  isPersonal     Boolean @map("is_personal")
+
+  @@map("coach_interviews")
 }
 
 enum Level {

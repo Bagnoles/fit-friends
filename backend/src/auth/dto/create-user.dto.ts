@@ -9,6 +9,7 @@ import {
 import { Gender } from 'src/shared/types/gender.enum';
 import { Subway } from 'src/shared/types/subway.enum';
 import { ApiProperty } from '@nestjs/swagger';
+import { Role } from 'src/shared/types/role.enum';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -74,6 +75,13 @@ export class CreateUserDto {
   })
   @IsEnum(Subway)
   subway: Subway;
+
+  @ApiProperty({
+    description: 'User role',
+    example: 'Customer',
+  })
+  @IsEnum(Role)
+  role: Role;
 
   @ApiProperty({
     description: 'User image URL',

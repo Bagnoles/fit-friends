@@ -11,6 +11,7 @@ import { OrderModule } from './order/order.module';
 import { InterviewModule } from './interview/interview.module';
 import fileConfig from './shared/config/file.config';
 import { FileUploaderModule } from './file-uploader/file-uploader.module';
+import { CoachInterviewModule } from './coach-interview/coach-interview.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { FileUploaderModule } from './file-uploader/file-uploader.module';
     ReviewModule,
     OrderModule,
     InterviewModule,
+    CoachInterviewModule,
     FileUploaderModule,
     ConfigModule.forRoot({
       isGlobal: true,

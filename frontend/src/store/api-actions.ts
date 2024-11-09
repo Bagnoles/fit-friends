@@ -4,7 +4,7 @@ import { State, store } from '.';
 import { CreateUserDto, LoginUserDto, UserInfo, UserTokens } from '../types/user.type';
 import { APIRoute } from '../const';
 import { saveTokens } from '../services/token';
-import { Interview } from '../types/interview.type';
+import { CoachInterview, CoachInterviewDto, Interview } from '../types/interview.type';
 import { Workout } from '../types/workout.type';
 import { CreateReviewDto, Review } from '../types/review.type';
 import { CreateOrderDto, Order } from '../types/order.type';
@@ -40,9 +40,24 @@ export const addInterview = createAppAsyncThunk<Interview, Interview>('user/inte
   }
 );
 
+export const addCoachInterview = createAppAsyncThunk<CoachInterview, CoachInterviewDto>('user/coachInterview',
+  async (dto, {extra: api}) => {
+    console.log(dto);
+    const {data} = await api.post<CoachInterview>(APIRoute.CoachInterview, dto/*, { headers: { 'Content-Type': 'multipart/form-data' } }*/);
+    return data;
+  }
+);
+
 export const getInterview = createAppAsyncThunk<Interview, string>('user/getInterview',
   async (userId, {extra: api}) => {
     const {data} = await api.get<Interview>(`${APIRoute.Interview}/${userId}`);
+    return data;
+  }
+);
+
+export const getCoachInterview = createAppAsyncThunk<CoachInterview, string>('user/getCoachInterview',
+  async (userId, {extra: api}) => {
+    const {data} = await api.get<CoachInterview>(`${APIRoute.CoachInterview}/${userId}`);
     return data;
   }
 );

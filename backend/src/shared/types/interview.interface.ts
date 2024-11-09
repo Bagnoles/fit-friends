@@ -12,3 +12,13 @@ export interface Interview {
   caloriesDay: number;
   isReady: boolean;
 }
+
+export interface CoachInterview {
+  id?: string;
+  userId: string;
+  level: Level;
+  workoutTypes: WorkoutType[];
+  coachingMerit: string;
+  certificateId: string;
+  isPersonal: boolean;
+}
