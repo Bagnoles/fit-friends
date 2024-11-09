@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Workout } from '../../types/workout.type';
 import { NameSpace } from '../../const';
-import { addReview, fetchWorkoutReviews, fetchWorkouts } from '../api-actions';
+import { addReview, createWorkout, fetchWorkoutReviews, fetchWorkouts } from '../api-actions';
 import { Review } from '../../types/review.type';
 import { PaginationResult } from '../../types/pagination.interface';
 
@@ -71,6 +71,19 @@ export const workoutSlice = createSlice({
       })
       .addCase(addReview.fulfilled, (state, action) => {
         state.reviews.data.push(action.payload);
+      })
+      .addCase(createWorkout.pending, (state) => {
+        state.workouts.isError = false;
+        state.workouts.isLoading = true;
+      })
+      .addCase(createWorkout.rejected, (state) => {
+        state.workouts.isError = true;
+        state.workouts.isLoading = false;
+      })
+      .addCase(createWorkout.fulfilled, (state, action) => {
+        state.workouts.isError = false;
+        state.workouts.isLoading = false;
+        state.workouts.data.entities.push(action.payload);
       })
   }
 });

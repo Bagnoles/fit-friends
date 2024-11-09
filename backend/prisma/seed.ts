@@ -208,6 +208,7 @@ async function seedDb(prismaClient: PrismaClient) {
         price: workout.price,
         type: workout.type as Type,
         videoUrl: workout.videoUrl,
+        coachId: '6d308040-96a2-4162-bea6-23asw5976540',
       },
     });
   }

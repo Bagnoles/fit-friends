@@ -32,7 +32,8 @@ model User {
   order           Order[]
   token           RefreshSession[]
   avatarId        String?    @map("avatar_id")
-  role            Role       
+  role            Role      
+  workouts        Workout[] 
 
   @@map("users")
 }
@@ -119,6 +120,8 @@ model Workout {
   gender      Gender
   videoUrl    String    @map("video_url")
   coach       String
+  coachId     String    @map("coach_id")
+  user        User      @relation(fields: [coachId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   isSpecial   Boolean   @map("is_special")
   balance     Balance[]
   review      Review[]

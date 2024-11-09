@@ -6,7 +6,8 @@ export const AppRoutes = {
   Main: '/main',
   Profile: '/profile',
   Workout: '/workouts',
-  Balance: '/balance'
+  Balance: '/balance',
+  Create: '/create',
 } as const;
 
 export enum AuthorizationStatus {

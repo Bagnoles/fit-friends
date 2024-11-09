@@ -20,3 +20,18 @@ export type Workout = {
   isSpecial: boolean;
   review: {rating: number}[];
 }
+
+export type CreateWorkoutDto = {
+  name: string;
+  imageUrl: string;
+  level: Level;
+  type: WorkoutType;
+  duration: Time;
+  price: number;
+  calories: number;
+  description: string;
+  gender: Gender;
+  videoUrl: string;
+  coach: string;
+  isSpecial: boolean;
+}

@@ -1,34 +1,48 @@
+import { Link } from 'react-router-dom';
 import { CoachInterview } from '../../../types/interview.type';
+import { AppRoutes } from '../../../const';
 
 type CoachPartProps = {
   interview: CoachInterview;
 }
 
-
 function CoachPart({interview}: CoachPartProps):JSX.Element {
+  console.log(interview);
   return (
     <div className="personal-account-coach">
-      <div className="personal-account-coach__navigation"><a className="thumbnail-link thumbnail-link--theme-light" href="#">
+      <div className="personal-account-coach__navigation">
+        <a className="thumbnail-link thumbnail-link--theme-light" href="#">
           <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
             <svg width="30" height="26" aria-hidden="true">
               <use xlinkHref="#icon-flash"></use>
             </svg>
-          </div><span className="thumbnail-link__text">Мои тренировки</span></a><a className="thumbnail-link thumbnail-link--theme-light" href="#">
+          </div>
+          <span className="thumbnail-link__text">Мои тренировки</span>
+        </a>
+        <Link className="thumbnail-link thumbnail-link--theme-light" to={AppRoutes.Create}>
           <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
             <svg width="30" height="26" aria-hidden="true">
               <use xlinkHref="#icon-add"></use>
             </svg>
-          </div><span className="thumbnail-link__text">Создать тренировку</span></a><a className="thumbnail-link thumbnail-link--theme-light" href="#">
+          </div>
+          <span className="thumbnail-link__text">Создать тренировку</span>
+        </Link>
+        <a className="thumbnail-link thumbnail-link--theme-light" href="#">
           <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
             <svg width="30" height="26" aria-hidden="true">
               <use xlinkHref="#icon-friends"></use>
             </svg>
-          </div><span className="thumbnail-link__text">Мои друзья</span></a><a className="thumbnail-link thumbnail-link--theme-light" href="#">
+          </div>
+          <span className="thumbnail-link__text">Мои друзья</span>
+        </a>
+        <a className="thumbnail-link thumbnail-link--theme-light" href="#">
           <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
             <svg width="30" height="26" aria-hidden="true">
               <use xlinkHref="#icon-bag"></use>
             </svg>
-          </div><span className="thumbnail-link__text">Мои заказы</span></a>
+          </div>
+          <span className="thumbnail-link__text">Мои заказы</span>
+        </a>
         <div className="personal-account-coach__calendar">
           <div className="thumbnail-spec-gym">
           <div className="thumbnail-spec-gym__image">

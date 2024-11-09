@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Logo from '../../components/logo/logo';
 import Input from '../../components/input/input';
 import { useAppDispatch } from '../../store/hooks';
@@ -9,6 +9,7 @@ import { Gender } from '../../types/gender.enum';
 import Radio from '../../components/radio/radio';
 import { LOCATION_NAMES, Subway } from '../../types/subway.enum';
 import { Role } from '../../types/role.enum';
+import Select from '../../components/select/select';
 
 
 function Register():JSX.Element {
@@ -20,8 +21,6 @@ function Register():JSX.Element {
   const [location, setLocation] = useState<Subway | null>(null);
   const [file, setFile] = useState<File | undefined>();
   const [role, setRole] = useState<Role>(Role.Customer);
-
-  const selectRef = useRef<HTMLDivElement | null>(null);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -44,15 +43,9 @@ function Register():JSX.Element {
   const handleRoleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setRole(evt.target.value as Role);
   };
-
-  const handleSelectButtonClick = () => {
-    selectRef.current?.classList.add('is-open');
-  }
-  const handleSelectItemClick = (evt: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-    selectRef.current?.classList.remove('is-open');
-    setLocation(evt.currentTarget.dataset.value as Subway);
-    selectRef.current?.classList.add('not-empty');
-  }
+  const handleLocationChange = (value: string) => {
+    setLocation(value as Subway);
+  };
 
   const handleFileChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     if (evt.target.files) {
@@ -125,20 +118,7 @@ function Register():JSX.Element {
                       />
                       <Input name='email' text='E-mail' type='email' value={email} onChange={handleEmailChange} required />
                       <Input name='birthday' text='Дата рождения' type='date' value={birthday} onChange={handleBirthdayChange} />
-                      <div className="custom-select custom-select--not-selected" ref={selectRef}>
-                        <span className="custom-select__label">Ваша локация</span>
-                        <button className="custom-select__button" type="button" aria-label="Выберите одну из опций" onClick={handleSelectButtonClick}>
-                          <span className="custom-select__text">{location}</span>
-                          <span className="custom-select__icon">
-                            <svg width="15" height="6" aria-hidden="true">
-                              <use xlinkHref="#arrow-down"></use>
-                            </svg>
-                          </span>
-                        </button>
-                        <ul className="custom-select__list" role="listbox">
-                          {Object.values(Subway).map((item) => <li className='custom-select__item' data-value={item} key={item} onClick={handleSelectItemClick}>{LOCATION_NAMES[item]}</li>)}
-                        </ul>
-                      </div>
+                      <Select text='Ваша локация' currentValue={location ? LOCATION_NAMES[location] : null} handleValueChange={handleLocationChange} items={Object.values(Subway)} namesObject={LOCATION_NAMES} />
                       <Input
                         name='password'
                         text='Пароль'

@@ -19,6 +19,7 @@ export class WorkoutEntity extends Entity implements StorableEntity<Workout> {
   videoUrl: string;
   coach: string;
   isSpecial: boolean;
+  coachId: string;
 
   constructor(workout?: Workout) {
     super();
@@ -43,6 +44,7 @@ export class WorkoutEntity extends Entity implements StorableEntity<Workout> {
     this.videoUrl = workout.videoUrl;
     this.coach = workout.coach;
     this.isSpecial = workout.isSpecial;
+    this.coachId = workout.coachId;
   }
 
   public toPOJO(): Workout {
@@ -60,6 +62,7 @@ export class WorkoutEntity extends Entity implements StorableEntity<Workout> {
       videoUrl: this.videoUrl,
       coach: this.coach,
       isSpecial: this.isSpecial,
+      coachId: this.coachId,
     };
   }
 }

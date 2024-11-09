@@ -5,7 +5,7 @@ import { CreateUserDto, LoginUserDto, UserInfo, UserTokens } from '../types/user
 import { APIRoute } from '../const';
 import { saveTokens } from '../services/token';
 import { CoachInterview, CoachInterviewDto, Interview } from '../types/interview.type';
-import { Workout } from '../types/workout.type';
+import { CreateWorkoutDto, Workout } from '../types/workout.type';
 import { CreateReviewDto, Review } from '../types/review.type';
 import { CreateOrderDto, Order } from '../types/order.type';
 import { Balance } from '../types/balance.type';
@@ -92,6 +92,13 @@ export const fetchWorkouts = createAppAsyncThunk<PaginationResult<Workout>, Work
 export const fetchWorkoutReviews = createAppAsyncThunk<Review[], string>('workouts/reviews',
   async (workoutId, {extra: api}) => {
     const {data} = await api.get<Review[]>(`${APIRoute.Review}/${workoutId}`);
+    return data;
+  }
+);
+
+export const createWorkout = createAppAsyncThunk<Workout, CreateWorkoutDto>('workouts/create',
+  async (dto, {extra: api}) => {
+    const {data} = await api.post<Workout>(APIRoute.Workout, dto);
     return data;
   }
 );
