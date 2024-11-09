@@ -6,12 +6,18 @@ import DiscountBlock from './discount-block/discount-block';
 import PopularBlock from './popular-block/popular-block';
 import SpecialBlock from './special-block/special-block';
 import { fetchWorkouts } from '../../store/api-actions';
+import { getUserInfo } from '../../store/user/user-selectors';
+import { Role } from '../../types/role.enum';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '../../const';
 
 function Main():JSX.Element {
   const isLoading = useAppSelector(getWorkoutLoadingStatus);
   const isError = useAppSelector(getWorkoutErrorStatus);
   const workouts = useAppSelector(getWorkouts);
+  const userRole = useAppSelector(getUserInfo)?.role;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchWorkouts());
@@ -19,6 +25,10 @@ function Main():JSX.Element {
 
   if (isError) {
     return <p>Произошла ошибка. Обновите страницу</p>;
+  }
+
+  if (userRole === Role.Coach) {
+    navigate(AppRoutes.Profile);
   }
 
   return (
