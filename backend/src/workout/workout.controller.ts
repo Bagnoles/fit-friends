@@ -37,6 +37,24 @@ export class WorkoutController {
   }
 
   @ApiResponse({
+    type: WorkoutWithPaginationRdo,
+    status: HttpStatus.OK,
+  })
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(InjectUserIdInterceptor)
+  @Get('/coach')
+  public async getCoachWorkouts(
+    @Query() query: WorkoutQuery,
+    @Body() { userId }: { userId: string },
+  ) {
+    const workoutsWithPagination = await this.workoutService.getAllWorkouts(
+      query,
+      userId,
+    );
+    return fillDto(WorkoutWithPaginationRdo, workoutsWithPagination);
+  }
+
+  @ApiResponse({
     type: WorkoutRdo,
     status: HttpStatus.OK,
   })

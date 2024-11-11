@@ -29,7 +29,7 @@ export class WorkoutRepository extends BasePostgresRepository<
     return Math.ceil(totalCount / limit);
   }
 
-  public async findAll(query?: WorkoutQuery) {
+  public async findAll(query?: WorkoutQuery, userId?: string) {
     const skip =
       query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
     const take = query?.limit;
@@ -45,6 +45,9 @@ export class WorkoutRepository extends BasePostgresRepository<
       where.type = {
         in: types,
       };
+    }
+    if (userId) {
+      where.coachId = userId;
     }
 
     const [records, workoutCount] = await Promise.all([

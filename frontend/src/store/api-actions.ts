@@ -89,6 +89,13 @@ export const fetchWorkouts = createAppAsyncThunk<PaginationResult<Workout>, Work
   }
 );
 
+export const fetchCoachWorkouts = createAppAsyncThunk<PaginationResult<Workout>, undefined>('workouts/fetchCoachWorkouts',
+  async (_arg, {extra: api}) => {
+    const {data} = await api.get<PaginationResult<Workout>>(`${APIRoute.Workout}/coach`);
+    return data;
+  }
+);
+
 export const fetchWorkoutReviews = createAppAsyncThunk<Review[], string>('workouts/reviews',
   async (workoutId, {extra: api}) => {
     const {data} = await api.get<Review[]>(`${APIRoute.Review}/${workoutId}`);

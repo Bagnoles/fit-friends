@@ -4,20 +4,22 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getWorkoutsWithPagination, getWorkoutErrorStatus, getWorkoutLoadingStatus } from '../../store/workout/workout-selectors';
 import FilterBlock from './filter-block/filter-block';
 import WorkoutList from './workout-list/workout-list';
-import { fetchWorkouts } from '../../store/api-actions';
+import { fetchCoachWorkouts, fetchWorkouts } from '../../store/api-actions';
 import { WorkoutType } from '../../types/workout-type.enum';
 import { SortDirection } from '../../types/sort-direction.enum';
 import { SortType } from '../../types/sort-type.enum';
 import { DEFAULT_PAGE_LIMIT } from '../../const';
+import { getUserInfo } from '../../store/user/user-selectors';
+import { Role } from '../../types/role.enum';
 
 const MAX_PRICE = 10000;
 const MAX_CALORIES = 1000;
 
 function Catalog():JSX.Element {
   const workoutsWithPagination = useAppSelector(getWorkoutsWithPagination);
-  console.log(workoutsWithPagination);
   const isServerError = useAppSelector(getWorkoutErrorStatus);
   const isLoading = useAppSelector(getWorkoutLoadingStatus);
+  const userInfo = useAppSelector(getUserInfo);
 
   const dispatch = useAppDispatch();
 
@@ -31,13 +33,17 @@ function Catalog():JSX.Element {
   const [maxCalories, setMaxCalories] = useState<number>(MAX_CALORIES);
 
   useEffect(() => {
-    dispatch(fetchWorkouts({
-      page,
-      sortDirection,
-      sortType,
-      type: checkedTypes
-    }))
-  }, [page, sortDirection, sortType, checkedTypes]);
+    if (userInfo?.role === Role.Coach) {
+      dispatch(fetchCoachWorkouts());
+    } else {
+      dispatch(fetchWorkouts({
+        page,
+        sortDirection,
+        sortType,
+        type: checkedTypes
+      }))
+    }
+  }, [page, sortDirection, sortType, checkedTypes, userInfo]);
 
   const handlePageChange = () => {
     setPage(page + 1);

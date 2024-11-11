@@ -8,8 +8,8 @@ import { CreateWorkoutDto } from './dto/create-workout.dto';
 export class WorkoutService {
   constructor(private readonly workoutRepository: WorkoutRepository) {}
 
-  public async getAllWorkouts(query?: WorkoutQuery) {
-    return await this.workoutRepository.findAll(query);
+  public async getAllWorkouts(query?: WorkoutQuery, userId?: string) {
+    return await this.workoutRepository.findAll(query, userId);
   }
 
   public async getWorkoutById(id: string): Promise<WorkoutEntity> {
