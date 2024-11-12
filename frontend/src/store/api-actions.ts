@@ -7,7 +7,7 @@ import { saveTokens } from '../services/token';
 import { CoachInterview, CoachInterviewDto, Interview } from '../types/interview.type';
 import { CreateWorkoutDto, Workout } from '../types/workout.type';
 import { CreateReviewDto, Review } from '../types/review.type';
-import { CreateOrderDto, Order } from '../types/order.type';
+import { CoachOrder, CreateOrderDto, Order } from '../types/order.type';
 import { Balance } from '../types/balance.type';
 import { PaginationResult } from '../types/pagination.interface';
 import { WorkoutQuery } from '../types/workout-query.type';
@@ -141,6 +141,13 @@ export const addToBalance = createAppAsyncThunk<Balance, {workoutId: string, cou
 export const deleteFromBalance = createAppAsyncThunk<Balance, {workoutId: string}>('user/deleteFromBalance',
   async (dto, {extra: api}) => {
     const {data} = await api.post<Balance>(`${APIRoute.Balance}/delete`, dto);
+    return data;
+  }
+);
+
+export const fetchCoachOrders = createAppAsyncThunk<CoachOrder[], undefined>('orders/fetchCoachOrders',
+  async (_arg, {extra: api}) => {
+    const {data} = await api.get<CoachOrder[]>(APIRoute.Order);
     return data;
   }
 );

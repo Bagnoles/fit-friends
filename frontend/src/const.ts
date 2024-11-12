@@ -8,6 +8,7 @@ export const AppRoutes = {
   Workout: '/workouts',
   Balance: '/balance',
   Create: '/create',
+  Order: '/orders',
 } as const;
 
 export enum AuthorizationStatus {
@@ -19,7 +20,8 @@ export enum AuthorizationStatus {
 export enum NameSpace {
   User = 'USER',
   Workout = 'WORKOUT',
-  Balance = 'BALANCE'
+  Balance = 'BALANCE',
+  Order = 'ORDER'
 }
 
 export enum APIRoute {

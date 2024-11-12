@@ -11,6 +11,10 @@ export class OrderService {
     return await this.orderRepository.findAllByUserId(userId);
   }
 
+  public async getCoachOrders(userId: string) {
+    return await this.orderRepository.findAllByCoachId(userId);
+  }
+
   public async addOrder(dto: CreateOrderDto) {
     const newOrder = new OrderEntity(dto);
     const result = await this.orderRepository.save(newOrder);

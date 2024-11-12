@@ -20,6 +20,14 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(InjectUserIdInterceptor)
+  @Get('/')
+  public async getCoachOrders(@Body() { userId }: { userId: string }) {
+    const result = await this.orderService.getCoachOrders(userId);
+    return result;
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('/:userId')
   public async index(@Param('userId') userId: string) {
     const result = await this.orderService.getUserOrders(userId);

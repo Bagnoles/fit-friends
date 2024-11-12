@@ -32,7 +32,20 @@ export class OrderRepository extends BasePostgresRepository<
     const document = await this.client.order.create({
       data: { ...entity.toPOJO() },
     });
-    //entity.id = document.id;
     return this.createEntityFromDocument(document as Order);
+  }
+
+  public async findAllByCoachId(userId: string) {
+    const documents = await this.client.order.findMany({
+      where: {
+        workout: {
+          coachId: userId,
+        },
+      },
+      include: {
+        workout: true,
+      },
+    });
+    return documents;
   }
 }
