@@ -96,4 +96,22 @@ export class WorkoutRepository extends BasePostgresRepository<
     });
     return this.createEntityFromDocument(document as Workout);
   }
+
+  public async update(entity: WorkoutEntity) {
+    const pojoEntity = entity.toPOJO();
+    const document = await this.client.workout.update({
+      where: {
+        id: entity.id,
+      },
+      data: pojoEntity,
+      include: {
+        review: {
+          select: {
+            rating: true,
+          },
+        },
+      },
+    });
+    return document;
+  }
 }

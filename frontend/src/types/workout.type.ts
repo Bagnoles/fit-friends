@@ -35,3 +35,11 @@ export type CreateWorkoutDto = {
   coach: string;
   isSpecial: boolean;
 }
+
+export type UpdateWorkoutDto = {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  isSpecial: boolean;
+}

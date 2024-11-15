@@ -8,6 +8,8 @@ import {
   Query,
   UseGuards,
   UseInterceptors,
+  Patch,
+  ForbiddenException,
 } from '@nestjs/common';
 import { WorkoutService } from './workout.service';
 import { fillDto } from 'src/shared/utils/common';
@@ -18,6 +20,7 @@ import { WorkoutWithPaginationRdo } from './rdo/workout-with-pagination.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InjectUserIdInterceptor } from 'src/shared/interceptors/inject-user-id.interceptor';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
+import { UpdateWorkoutDto } from './dto/update-workout.dto';
 
 @ApiTags('workouts')
 @Controller('workouts')
@@ -79,5 +82,30 @@ export class WorkoutController {
   public async add(@Body() dto: CreateWorkoutDto) {
     const result = await this.workoutService.saveWorkout(dto);
     return fillDto(WorkoutRdo, result.toPOJO());
+  }
+
+  @ApiResponse({
+    type: WorkoutRdo,
+    status: HttpStatus.CREATED,
+    description: 'Workout was updated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Workout not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'You can only edit your workout',
+  })
+  @UseInterceptors(InjectUserIdInterceptor)
+  @UseGuards(JwtAuthGuard)
+  @Patch('/:id')
+  public async update(@Param('id') id: string, @Body() dto: UpdateWorkoutDto) {
+    const workout = await this.workoutService.getWorkoutById(id);
+    if (workout.coachId !== dto.userId) {
+      throw new ForbiddenException(`You can't edit this workout!`);
+    }
+    const updatedWorkout = await this.workoutService.updateWorkout(id, dto);
+    return updatedWorkout;
   }
 }
