@@ -3,7 +3,9 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
+  UseGuards,
   UseInterceptors,
   //UploadedFile,
 } from '@nestjs/common';
@@ -12,6 +14,9 @@ import { ApiTags } from '@nestjs/swagger';
 import { CoachInterviewService } from './coach-interview.service';
 import { CreateCoachInterviewDto } from './dto/create-coach-interview.dto';
 import { FileUploaderService } from 'src/file-uploader/file-uploader.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { InjectUserIdInterceptor } from 'src/shared/interceptors/inject-user-id.interceptor';
+import { UpdateCoachInterviewDto } from './dto/update-coach-interview.dto';
 
 @ApiTags('coach/interview')
 @Controller('coach/interview')
@@ -49,5 +54,13 @@ export class CoachInterviewController {
         await this.fileService.getFile(result.certificateId)
       ).toPOJO(),
     };
+  }
+
+  @UseInterceptors(InjectUserIdInterceptor)
+  @UseGuards(JwtAuthGuard)
+  @Patch('/')
+  public async update(@Body() dto: UpdateCoachInterviewDto) {
+    const result = await this.interviewService.updateInterview(dto);
+    return result;
   }
 }

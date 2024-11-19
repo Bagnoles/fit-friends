@@ -38,4 +38,15 @@ export class InterviewRepository extends BasePostgresRepository<
     //entity.id = document.id;
     return this.createEntityFromDocument(document as Interview);
   }
+
+  public async update(entity: InterviewEntity) {
+    const pojoEntity = entity.toPOJO();
+    const document = await this.client.interview.update({
+      where: {
+        userId: entity.userId,
+      },
+      data: pojoEntity,
+    });
+    return this.createEntityFromDocument(document as Interview);
+  }
 }

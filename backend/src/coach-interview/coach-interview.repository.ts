@@ -39,4 +39,15 @@ export class CoachInterviewRepository extends BasePostgresRepository<
     });
     return this.createEntityFromDocument(document as CoachInterview);
   }
+
+  public async update(entity: CoachInterviewEntity) {
+    const pojoEntity = entity.toPOJO();
+    const document = await this.client.coachInterview.update({
+      where: {
+        userId: entity.userId,
+      },
+      data: pojoEntity,
+    });
+    return this.createEntityFromDocument(document as CoachInterview);
+  }
 }

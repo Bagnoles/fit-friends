@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InterviewRepository } from './interview.repository';
 import { InterviewEntity } from './interview.entity';
 import { CreateInterviewDto } from './dto/create-interview.dto';
+import { UpdateInterviewDto } from './dto/update-interview.dto';
 
 @Injectable()
 export class InterviewService {
@@ -15,5 +16,17 @@ export class InterviewService {
     const interview = new InterviewEntity(dto);
     const result = await this.interviewRepository.save(interview);
     return result;
+  }
+
+  public async updateInterview(dto: UpdateInterviewDto) {
+    const interview = await this.interviewRepository.findByUserId(dto.userId);
+    if (!interview) {
+      throw new NotFoundException(
+        `Опрос пользователя с ID ${dto.userId} не найден`,
+      );
+    }
+    const updatedInterview = new InterviewEntity({ ...interview, ...dto });
+    await this.interviewRepository.update(updatedInterview);
+    return updatedInterview;
   }
 }
