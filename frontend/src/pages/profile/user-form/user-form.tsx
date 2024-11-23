@@ -3,30 +3,49 @@ import Checkbox from '../../../components/checkbox/checkbox';
 import { LOCATION_NAMES } from '../../../types/subway.enum';
 import { GENDER_NAMES } from '../../../types/gender.enum';
 import { LEVEL_NAMES } from '../../../types/level.enum';
-import { UserInfo } from '../../../types/user.type';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../../const';
 import { getImagePath } from '../../../utils';
 import { Role } from '../../../types/role.enum';
 import { CoachInterview, Interview } from '../../../types/interview.type';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { getUserInfo } from '../../../store/user/user-selectors';
+import NotFound from '../../not-found/not-found';
+import { updateProfile } from '../../../store/api-actions';
 
 type UserFormProps = {
-  userInfo: UserInfo;
   isEdit: boolean;
   onEditButtonClick: () => void;
 }
 
-function UserForm({userInfo, isEdit, onEditButtonClick}: UserFormProps):JSX.Element {
+function UserForm({isEdit, onEditButtonClick}: UserFormProps):JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const userInfo = useAppSelector(getUserInfo);
+
+  if (!userInfo) {
+    return <NotFound />
+  }
+
   const imagePath = userInfo.avatar ? getImagePath(userInfo.avatar) : userInfo.avatarUrl;
   const interview = userInfo.role === Role.Coach ? userInfo.interview as CoachInterview : userInfo.interview as Interview;
   const { name, description } = userInfo;
 
   const [userName, setUserName] = useState<string>(name);
   const [userDescription, setUserDescription] = useState<string>(description);
-  const [isChecked, setIsChecked] = useState<boolean>(false/*'isPersonal' in interview ? interview.isPersonal : interview.isReady*/);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
   const [checkedWorkoutTypes, setCheckedWorkoutTypes] = useState<WorkoutType[]>(interview?.workoutTypes);
+
+  useEffect(() => {
+    if (interview) {
+      setIsChecked('isPersonal' in interview ? interview.isPersonal : interview.isReady);
+      setCheckedWorkoutTypes(interview.workoutTypes)
+    }
+  }, [interview]);
+
+  const isUserInfoChanged = () => userDescription !== description || userName !== name;
 
   const handleCheckedStatusClick = () => {
     setIsChecked(!isChecked);
@@ -38,6 +57,10 @@ function UserForm({userInfo, isEdit, onEditButtonClick}: UserFormProps):JSX.Elem
     if (checkedWorkoutTypes.includes(evt.target.value as WorkoutType)) {
       setCheckedWorkoutTypes(checkedWorkoutTypes.filter((item) => item !== evt.target.value));
     } else {
+      if (checkedWorkoutTypes.length === 3 ) {
+        toast.warn('Нельзя выбрать больше 3 специализаций!');
+        return;
+      }
       setCheckedWorkoutTypes([...checkedWorkoutTypes, evt.target.value as WorkoutType]);
     }
   };
@@ -51,6 +74,18 @@ function UserForm({userInfo, isEdit, onEditButtonClick}: UserFormProps):JSX.Elem
 
   const handleEditButtonClick = () => {
     onEditButtonClick();
+    if (isUserInfoChanged()) {
+      dispatch(updateProfile({
+        name: userName,
+        description: userDescription,
+        id: userInfo.id
+      }))
+      .then((response) => {
+        if (response.meta.requestStatus === 'fulfilled') {
+          navigate(AppRoutes.Profile);
+        }
+      });
+    }
   }
 
   return (
@@ -88,7 +123,7 @@ function UserForm({userInfo, isEdit, onEditButtonClick}: UserFormProps):JSX.Elem
           <h2 className="user-info__title user-info__title--status">Статус</h2>
           <div className="custom-toggle custom-toggle--switch user-info__toggle">
             <label>
-              <input type="checkbox" name="ready-for-training" checked={isChecked} onChange={handleCheckedStatusClick} /><span className="custom-toggle__icon">
+              <input type="checkbox" name="ready-for-training" checked={isChecked} onChange={handleCheckedStatusClick} disabled={!isEdit} /><span className="custom-toggle__icon">
                 <svg width="9" height="6" aria-hidden="true">
                   <use xlinkHref="#arrow-check"></use>
                 </svg></span><span className="custom-toggle__label">{userInfo.role === Role.Coach ? 'Готов тренировать' : 'Готов тренироваться'}</span>
@@ -98,7 +133,7 @@ function UserForm({userInfo, isEdit, onEditButtonClick}: UserFormProps):JSX.Elem
         <div className="user-info__section">
           <h2 className="user-info__title user-info__title--specialization">Специализация</h2>
           <div className="specialization-checkbox user-info__specialization">
-            {Object.values(WorkoutType).map((item) => <Checkbox checkedValues={checkedWorkoutTypes ?? []} text={WORKOUT_TYPES_NAME[item]} value={item} key={item} onChange={handleTypesChange} />)}
+            {Object.values(WorkoutType).map((item) => <Checkbox checkedValues={checkedWorkoutTypes ?? []} text={WORKOUT_TYPES_NAME[item]} value={item} key={item} onChange={handleTypesChange} isDisabled={!isEdit} />)}
           </div>
         </div>
         <div className="custom-select--readonly custom-select user-info__select">

@@ -113,7 +113,15 @@ export class AuthController {
   @Patch('/:userId')
   public async update(@Param('userId') id: string, @Body() dto: UpdateUserDto) {
     const updatedUser = await this.authService.updateProfile(id, dto);
-    return fillDto(UserRdo, updatedUser.toPOJO());
+    const result = updatedUser.avatarId
+      ? fillDto(UserRdo, {
+          ...updatedUser.toPOJO(),
+          avatar: (
+            await this.fileService.getFile(updatedUser.avatarId)
+          ).toPOJO(),
+        })
+      : fillDto(UserRdo, updatedUser.toPOJO());
+    return result;
   }
 
   @ApiResponse({

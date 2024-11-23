@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AuthorizationStatus, NameSpace } from '../../const';
 import { UserInfo } from '../../types/user.type';
-import { addCoachInterview, addInterview, checkAuthorization, getCoachInterview, getInterview, loginAction, refreshTokens, registerAction } from '../api-actions';
+import { addCoachInterview, addInterview, checkAuthorization, getCoachInterview, getInterview, loginAction, refreshTokens, registerAction, updateProfile } from '../api-actions';
 
 type UserInitialStateType = {
   authorizationStatus: AuthorizationStatus;
@@ -72,6 +72,9 @@ export const userSlice = createSlice({
       })
       .addCase(refreshTokens.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.userInfo = action.payload;
       })
       .addCase(addCoachInterview.fulfilled, (state, action) => {
         state.isInterviewError = false;

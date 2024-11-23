@@ -44,3 +44,5 @@ npm run start
 `POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, PGADMIN_DEFAULT_EMAIL, PGADMIN_DEFAULT_PASSWORD, DATABASE_URL` — настройки для подключения к PostgreSQL  
 
 `JWT_ACCESS_TOKEN_SECRET, JWT_ACCESS_TOKEN_EXPIRES_IN, JWT_REFRESH_TOKEN_SECRET, JWT_REFRESH_TOKEN_EXPIRES_IN` — настройки для Access и Refresh Tokens 
+
+**Спецификация API** будет доступна по ссылке `http://localhost:3000/spec`

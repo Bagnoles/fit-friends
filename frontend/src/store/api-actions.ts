@@ -42,8 +42,8 @@ export const addInterview = createAppAsyncThunk<Interview, Interview>('user/inte
 
 export const addCoachInterview = createAppAsyncThunk<CoachInterview, CoachInterviewDto>('user/coachInterview',
   async (dto, {extra: api}) => {
-    console.log(dto);
-    const {data} = await api.post<CoachInterview>(APIRoute.CoachInterview, dto/*, { headers: { 'Content-Type': 'multipart/form-data' } }*/);
+    await api.post<CoachInterview>(APIRoute.CoachInterview, dto);
+    const {data} = await api.post<CoachInterview>(`${APIRoute.CoachInterview}/certificate`, dto, { headers: { 'Content-Type': 'multipart/form-data' } });
     return data;
   }
 );
@@ -66,6 +66,13 @@ export const checkAuthorization = createAppAsyncThunk<UserInfo, undefined>('user
   async (_arg, {extra: api}) => {
     const {data: dataWithId} = await api.post<{id: string}>(`${APIRoute.User}/check`);
     const {data} = await api.get<UserInfo>(`${APIRoute.User}/${dataWithId.id}`);
+    return data;
+  }
+);
+
+export const updateProfile = createAppAsyncThunk<UserInfo, {name: string, description: string, id: string}>('user/update',
+  async (dto, {extra: api}) => {
+    const {data} = await api.patch<UserInfo>(`${APIRoute.User}/${dto.id}`, {name: dto.name, description: dto.description});
     return data;
   }
 );

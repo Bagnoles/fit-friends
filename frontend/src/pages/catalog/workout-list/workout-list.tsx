@@ -6,6 +6,10 @@ type WorkoutListProps = {
 }
 
 function WorkoutList({workouts}: WorkoutListProps):JSX.Element {
+  if (workouts.length === 0) {
+    return <p>Тренировок нет.</p>
+  }
+
   return (
     <ul className="training-catalog__list">
       {workouts.map((item) => <WorkoutCard className='training-catalog__item' key={item.id} workout={item} />)}

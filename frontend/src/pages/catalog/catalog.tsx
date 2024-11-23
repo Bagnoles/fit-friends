@@ -11,6 +11,7 @@ import { SortType } from '../../types/sort-type.enum';
 import { DEFAULT_PAGE_LIMIT } from '../../const';
 import { getUserInfo } from '../../store/user/user-selectors';
 import { Role } from '../../types/role.enum';
+import { Time } from '../../types/time.enum';
 
 const MAX_PRICE = 10000;
 const MAX_CALORIES = 1000;
@@ -25,6 +26,7 @@ function Catalog():JSX.Element {
 
   const [page, setPage] = useState<number>(workoutsWithPagination.currentPage);
   const [checkedTypes, setCheckedTypes] = useState<WorkoutType[]>(Object.values(WorkoutType));
+  const [checkedDuration, setCheckedDuration] = useState<Time[]>(Object.values(Time));
   const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.Desc);
   const [sortType, _setSortType] = useState<SortType>(SortType.Price);
   const [minPrice, setMinPrice] = useState<number>(0);
@@ -47,6 +49,13 @@ function Catalog():JSX.Element {
 
   const handlePageChange = () => {
     setPage(page + 1);
+  }
+  const handleChangeCheckedDuration = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    if (checkedDuration.includes(evt.target.value as Time)) {
+      setCheckedDuration(checkedDuration.filter((item) => item !== evt.target.value));
+    } else {
+      setCheckedDuration([...checkedDuration, evt.target.value as Time]);
+    }
   }
   const handleChangeCheckedTypes = (evt: React.ChangeEvent<HTMLInputElement>) => {
     if (checkedTypes.includes(evt.target.value as WorkoutType)) {
@@ -86,6 +95,8 @@ function Catalog():JSX.Element {
               <FilterBlock
                 checkedTypes={checkedTypes}
                 onTypeChange={handleChangeCheckedTypes}
+                onDurationChange={handleChangeCheckedDuration}
+                checkedDuration={checkedDuration}
                 onSortDirectionChange={handleSortDirectionChange}
                 sortDirection={sortDirection}
                 maxCalories={maxCalories}

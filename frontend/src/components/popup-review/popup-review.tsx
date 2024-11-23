@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RatingItem from './rating-item';
 import { useAppDispatch } from '../../store/hooks';
 import { addReview, fetchWorkouts } from '../../store/api-actions';
@@ -16,6 +16,20 @@ function PopupReview({onPopupClose, workoutId}: PopupReviewProps):JSX.Element {
   const [rating, setRating] = useState<string>();
 
   const dispatch = useAppDispatch();
+
+  const onEscapeBtnClick = (ev: KeyboardEvent) => {
+    if (ev.key === 'Escape') {
+      ev.preventDefault();
+      onPopupClose();
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', onEscapeBtnClick)
+    return () => {
+      document.removeEventListener('keydown', onEscapeBtnClick);
+    }
+  }, []);
 
   const handleTextChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(evt.target.value);

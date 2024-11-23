@@ -1,14 +1,14 @@
-import { WORKOUT_TYPES_NAME, WorkoutType } from '../../../types/workout-type.enum';
-
 type FilterCheckboxProps = {
-  name: WorkoutType;
+  name: string;
   onChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
   isChecked: boolean;
+  className: string;
+  text: string;
 }
 
-function FilterCheckbox({name, onChange, isChecked}: FilterCheckboxProps):JSX.Element {
+function FilterCheckbox({name, onChange, isChecked, className, text}: FilterCheckboxProps):JSX.Element {
   return (
-    <li className="gym-catalog-form__check-list-item">
+    <li className={className}>
       <div className="custom-toggle custom-toggle--checkbox">
         <label>
           <input type="checkbox" value={name} name="type" checked={isChecked} onChange={onChange} />
@@ -17,7 +17,7 @@ function FilterCheckbox({name, onChange, isChecked}: FilterCheckboxProps):JSX.El
               <use xlinkHref="#arrow-check"></use>
             </svg>
           </span>
-          <span className="custom-toggle__label">{WORKOUT_TYPES_NAME[name]}</span>
+          <span className="custom-toggle__label">{text}</span>
         </label>
       </div>
     </li>

@@ -1,12 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import { SortDirection } from '../../../types/sort-direction.enum';
-import { WorkoutType } from '../../../types/workout-type.enum';
+import { WORKOUT_TYPES_NAME, WorkoutType } from '../../../types/workout-type.enum';
 import FilterCheckbox from './filter-checkbox';
 import { AppRoutes } from '../../../const';
+import { useAppSelector } from '../../../store/hooks';
+import { getUserInfo } from '../../../store/user/user-selectors';
+import { Role } from '../../../types/role.enum';
+import { Time, TIME_INTERVALS } from '../../../types/time.enum';
 
 type FilterBlockProps = {
   checkedTypes: WorkoutType[];
   onTypeChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  checkedDuration: Time[];
+  onDurationChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
   sortDirection: SortDirection;
   onSortDirectionChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
   minPrice: number;
@@ -22,6 +28,8 @@ type FilterBlockProps = {
 function FilterBlock({
   checkedTypes,
   onTypeChange,
+  checkedDuration,
+  onDurationChange,
   sortDirection,
   onSortDirectionChange,
   minPrice,
@@ -33,6 +41,7 @@ function FilterBlock({
   onMinCaloriesChange,
   onMaxCaloriesChange
 }: FilterBlockProps):JSX.Element {
+  const userInfo = useAppSelector(getUserInfo);
   const navigate = useNavigate();
 
   return (
@@ -102,13 +111,13 @@ function FilterBlock({
               </div>
             </div>
           </div>
-          <div className="gym-catalog-form__block gym-catalog-form__block--type">
+          {userInfo?.role === Role.Customer && <div className="gym-catalog-form__block gym-catalog-form__block--type">
             <h4 className="gym-catalog-form__block-title">Тип</h4>
             <ul className="gym-catalog-form__check-list">
-              {Object.values(WorkoutType).map((item) => <FilterCheckbox isChecked={checkedTypes.includes(item)} name={item} onChange={onTypeChange} key={item} />)}
+              {Object.values(WorkoutType).map((item) => <FilterCheckbox isChecked={checkedTypes.includes(item)} name={item} onChange={onTypeChange} key={item} className='gym-catalog-form__check-list-item' text={WORKOUT_TYPES_NAME[item]} />)}
             </ul>
-          </div>
-          <div className="gym-catalog-form__block gym-catalog-form__block--sort">
+          </div>}
+          {userInfo?.role === Role.Customer && <div className="gym-catalog-form__block gym-catalog-form__block--sort">
             <h4 className="gym-catalog-form__title gym-catalog-form__title--sort">Сортировка</h4>
             <div className="btn-radio-sort gym-catalog-form__radio">
               <label>
@@ -123,7 +132,13 @@ function FilterBlock({
                 </label>
                */}
             </div>
-          </div>
+          </div>}
+          {userInfo?.role === Role.Coach && <div className="my-training-form__block my-training-form__block--duration">
+            <h4 className="my-training-form__block-title">Длительность</h4>
+            <ul className="my-training-form__check-list">
+              {Object.values(Time).map((item) => <FilterCheckbox className='my-training-form__check-list-item' isChecked={checkedDuration.includes(item)} name={item} onChange={onDurationChange} key={item} text={TIME_INTERVALS[item]} />)}
+            </ul>
+          </div>}
         </form>
       </div>
     </div>

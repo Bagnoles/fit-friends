@@ -4,9 +4,10 @@ import { Interview } from '../../../types/interview.type';
 
 type CustomerPartProps = {
   interview: Interview;
+  isEdit: boolean;
 }
 
-function CustomerPart({interview}: CustomerPartProps):JSX.Element {
+function CustomerPart({interview, isEdit}: CustomerPartProps):JSX.Element {
   return (
     <div className="personal-account-user">
       <div className="personal-account-user__schedule">
@@ -14,12 +15,12 @@ function CustomerPart({interview}: CustomerPartProps):JSX.Element {
           <div className="personal-account-user__form">
             <div className="personal-account-user__input">
               <label><span className="personal-account-user__label">План на день, ккал</span>
-                <input type="text" name="schedule-for-the-day" value={interview.caloriesDay} />
+                <input type="text" name="schedule-for-the-day" value={interview?.caloriesDay} disabled={!isEdit} />
               </label>
             </div>
             <div className="personal-account-user__input">
               <label><span className="personal-account-user__label">План на неделю, ккал</span>
-                <input type="text" name="schedule-for-the-week" value={( interview.caloriesDay ?? 0 ) * 7} />
+                <input type="text" name="schedule-for-the-week" value={( interview?.caloriesDay ?? 0 ) * 7} disabled />
               </label>
             </div>
           </div>

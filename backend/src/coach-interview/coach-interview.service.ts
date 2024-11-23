@@ -29,4 +29,25 @@ export class CoachInterviewService {
     await this.interviewRepository.update(updatedInterview);
     return updatedInterview;
   }
+
+  public async addCertificate({
+    userId,
+    certificateId,
+  }: {
+    userId: string;
+    certificateId: string;
+  }) {
+    const interview = await this.interviewRepository.findByUserId(userId);
+    if (!interview) {
+      throw new NotFoundException(
+        `Опрос пользователя с ID ${userId} не найден`,
+      );
+    }
+    const updatedInterview = new CoachInterviewEntity({
+      ...interview,
+      certificateId,
+    });
+    await this.interviewRepository.update(updatedInterview);
+    return updatedInterview;
+  }
 }

@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
   UseGuards,
   UseInterceptors,
   //UploadedFile,
@@ -38,21 +39,28 @@ export class CoachInterviewController {
   }
 
   @Post('/')
-  @UseInterceptors(FileInterceptor('file'))
-  public async create(
-    @Body() dto: CreateCoachInterviewDto,
-    //@UploadedFile() file: Express.Multer.File,
-  ) {
-    //const fileEntity = await this.fileService.saveFile(file);
-    const result = await this.interviewService.saveInterview({
+  public async create(@Body() dto: CreateCoachInterviewDto) {
+    await this.interviewService.saveInterview({
       ...dto,
       certificateId: '97bce6d3-7560-4901-9238-17e750b09ee1',
     });
+  }
+
+  @Post('/certificate')
+  @UseInterceptors(InjectUserIdInterceptor)
+  @UseInterceptors(FileInterceptor('file'))
+  public async addCertificate(
+    @Body() dto: { userId: string },
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const fileEntity = await this.fileService.saveFile(file);
+    const coachInfo = await this.interviewService.addCertificate({
+      userId: dto.userId,
+      certificateId: fileEntity.id,
+    });
     return {
-      ...result.toPOJO(),
-      certificate: (
-        await this.fileService.getFile(result.certificateId)
-      ).toPOJO(),
+      ...coachInfo.toPOJO(),
+      certificate: fileEntity.toPOJO(),
     };
   }
 

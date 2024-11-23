@@ -14,6 +14,7 @@ import { getUserInfo } from '../../store/user/user-selectors';
 import { toast } from 'react-toastify';
 import { Role } from '../../types/role.enum';
 
+const MAX_WORKOUT_TYPES = 3;
 
 function Interview():JSX.Element {
   const [workouts, setWorkouts] = useState<WorkoutType[]>([]);
@@ -34,6 +35,10 @@ function Interview():JSX.Element {
     if (workouts.includes(evt.target.value as WorkoutType)) {
       setWorkouts(workouts.filter((item) => item !== evt.target.value));
     } else {
+      if (workouts.length === MAX_WORKOUT_TYPES ) {
+        toast.warn('Нельзя выбрать больше 3 специализаций!');
+        return;
+      }
       setWorkouts([...workouts, evt.target.value as WorkoutType]);
     }
   };
@@ -82,6 +87,14 @@ function Interview():JSX.Element {
         })
     }
     if (role === Role.Coach) {
+      if (coachingMerit.length < 10 || coachingMerit.length > 140) {
+        toast.warn('Длина текста должна быть от 10 до 140 символов!');
+        return;
+      }
+      if (!file) {
+        toast.warn('Обязательно добавьте сертификат!');
+        return;
+      }
       const interview = {
         level,
         workoutTypes: workouts,
@@ -90,7 +103,6 @@ function Interview():JSX.Element {
         userId,
         file
       };
-      console.log(interview);
       dispatch(addCoachInterview(interview))
         .then((response) => {
           if (response.meta.requestStatus === 'fulfilled') {
@@ -158,6 +170,7 @@ function Interview():JSX.Element {
                         </div>
                       </div>}
                       {role === Role.Coach && <div className="questionnaire-coach__block"><span className="questionnaire-coach__legend">Ваши дипломы и сертификаты</span>
+                        <span>{file && `Загружен файл: ${file.name}`}</span>
                         <div className="drag-and-drop questionnaire-coach__drag-and-drop">
                           <label><span className="drag-and-drop__label" tabIndex={0}>Загрузите сюда файлы формата PDF, JPG или PNG
                               <svg width="20" height="20" aria-hidden="true">

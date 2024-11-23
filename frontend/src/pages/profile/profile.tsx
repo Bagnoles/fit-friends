@@ -22,6 +22,7 @@ function Profile():JSX.Element {
   if (!userInfo) {
     return <NotFound />
   }
+
   useEffect(() => {
     if (userInfo.role === Role.Customer) {
       dispatch(getInterview(userInfo.id));
@@ -30,7 +31,7 @@ function Profile():JSX.Element {
     if (userInfo.role === Role.Coach) {
       dispatch(getCoachInterview(userInfo.id));
     }
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="wrapper">
@@ -40,9 +41,9 @@ function Profile():JSX.Element {
           <div className="container">
             <div className="inner-page__wrapper">
               <h1 className="visually-hidden">Личный кабинет</h1>
-              <UserForm userInfo={userInfo} isEdit={isEdit} onEditButtonClick={handleEditingButton} />
+              <UserForm isEdit={isEdit} onEditButtonClick={handleEditingButton} />
               <div className="inner-page__content">
-                {userInfo.role === Role.Customer && <CustomerPart interview={userInfo.interview as Interview} />}
+                {userInfo.role === Role.Customer && <CustomerPart interview={userInfo.interview as Interview} isEdit={isEdit} />}
                 {userInfo.role === Role.Coach && <CoachPart interview={userInfo.interview as CoachInterview} />}
               </div>
             </div>

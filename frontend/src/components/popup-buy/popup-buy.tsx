@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Workout } from '../../types/workout.type';
 import { PaymentType } from '../../types/payment-type.enum';
 import { useAppDispatch } from '../../store/hooks';
@@ -21,6 +21,20 @@ function PopupBuy({onPopupClose, workout}: PopupBuyProps):JSX.Element {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const onEscapeBtnClick = (ev: KeyboardEvent) => {
+    if (ev.key === 'Escape') {
+      ev.preventDefault();
+      onPopupClose();
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', onEscapeBtnClick)
+    return () => {
+      document.removeEventListener('keydown', onEscapeBtnClick);
+    }
+  }, []);
 
   const handleAddWorkout = () => {
     setCount(count + 1);
