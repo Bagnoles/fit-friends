@@ -8,7 +8,6 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
-  //UploadedFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
@@ -42,7 +41,7 @@ export class CoachInterviewController {
   public async create(@Body() dto: CreateCoachInterviewDto) {
     await this.interviewService.saveInterview({
       ...dto,
-      certificateId: '97bce6d3-7560-4901-9238-17e750b09ee1',
+      certificateId: '',
     });
   }
 
