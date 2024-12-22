@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AuthorizationStatus, NameSpace } from '../../const';
 import { UserInfo } from '../../types/user.type';
-import { addCoachInterview, addInterview, checkAuthorization, getCoachInterview, getInterview, loginAction, refreshTokens, registerAction, updateProfile } from '../api-actions';
+import { addCoachInterview, addInterview, checkAuthorization, fetchUsers, getCoachInterview, getInterview, loginAction, refreshTokens, registerAction, updateProfile } from '../api-actions';
 
 type UserInitialStateType = {
   authorizationStatus: AuthorizationStatus;
@@ -9,6 +9,11 @@ type UserInitialStateType = {
   isLoginError: boolean;
   isInterviewError: boolean;
   userInfo: UserInfo | null ;
+  users: {
+    data: UserInfo[];
+    isLoading: boolean;
+    isError: boolean;
+  }
 }
 
 const initialState: UserInitialStateType = {
@@ -17,6 +22,11 @@ const initialState: UserInitialStateType = {
   isLoginError: false,
   isInterviewError: false,
   userInfo: null,
+  users: {
+    data: [],
+    isLoading: false,
+    isError: false
+  }
 };
 
 export const userSlice = createSlice({
@@ -93,6 +103,19 @@ export const userSlice = createSlice({
       })
       .addCase(getCoachInterview.rejected, (state) => {
         state.isInterviewError = true;
+      })
+      .addCase(fetchUsers.pending, (state) => {
+        state.users.isError = false;
+        state.users.isLoading = true;
+      })
+      .addCase(fetchUsers.rejected, (state) => {
+        state.users.isError = true;
+        state.users.isLoading = false;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.users.isError = false;
+        state.users.isLoading = false;
+        state.users.data = action.payload;
       })
   }
 });

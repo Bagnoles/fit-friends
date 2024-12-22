@@ -165,3 +165,10 @@ export const fetchCoachOrders = createAppAsyncThunk<CoachOrder[], undefined>('or
     return data;
   }
 );
+
+export const fetchUsers = createAppAsyncThunk<UserInfo[], undefined>('users/getAll',
+  async (_arg, {extra: api}) => {
+    const {data} = await api.get<UserInfo[]>(APIRoute.User);
+    return data;
+  }
+);

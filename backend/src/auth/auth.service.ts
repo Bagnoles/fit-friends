@@ -121,4 +121,10 @@ export class AuthService {
 
     return existUser;
   }
+
+  public async getAllUsers() {
+    const users = await this.userRepository.findAll();
+
+    return users;
+  }
 }

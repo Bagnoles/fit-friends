@@ -56,4 +56,20 @@ export class UserRepository extends BasePostgresRepository<UserEntity, User> {
     });
     return this.createEntityFromDocument(document as User);
   }
+
+  public async findAll() {
+    const documents = await this.client.user.findMany({
+      include: {
+        interview: true,
+        coachInterview: true,
+      },
+    });
+    return documents.map((item) =>
+      Object.fromEntries(
+        Object.entries(item).filter(
+          ([key]) => key !== 'passwordHash' && key !== 'email',
+        ),
+      ),
+    );
+  }
 }

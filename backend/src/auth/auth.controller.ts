@@ -145,4 +145,15 @@ export class AuthController {
       : fillDto(UserRdo, user.toPOJO());
     return result;
   }
+
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+  })
+  @UseGuards(JwtAuthGuard)
+  @Get('/')
+  public async getUsers() {
+    const users = await this.authService.getAllUsers();
+    return users;
+  }
 }

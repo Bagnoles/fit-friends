@@ -15,6 +15,7 @@ export type UserInfo = {
   subway: Subway;
   imageUrl: string;
   interview: Interview | CoachInterview | null;
+  coachInterview: CoachInterview | null;
   avatar?: File;
   role: Role;
 }

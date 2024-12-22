@@ -9,6 +9,7 @@ export const AppRoutes = {
   Balance: '/balance',
   Create: '/create',
   Order: '/orders',
+  Users: '/users'
 } as const;
 
 export enum AuthorizationStatus {

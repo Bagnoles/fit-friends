@@ -13,6 +13,7 @@ import PrivateRoute from '../private-route/private-route';
 import Purchase from '../../pages/purchase/purchase';
 import CreateWorkout from '../../pages/create-workout/create-workout';
 import Order from '../../pages/order/order';
+import Users from '../../pages/users/users';
 
 function App():JSX.Element {
   return (
@@ -28,6 +29,7 @@ function App():JSX.Element {
       <Route path={AppRoutes.Workout} element={<PrivateRoute><Catalog /></PrivateRoute>} />
       <Route path={`${AppRoutes.Workout}/:id`} element={<PrivateRoute><Workout /></PrivateRoute>} />
       <Route path={AppRoutes.Create} element={<PrivateRoute><CreateWorkout /></PrivateRoute>} />
+      <Route path={AppRoutes.Users} element={<PrivateRoute><Users /></PrivateRoute>} />
       <Route path='*' element={<NotFound />} />
     </Routes>
   )

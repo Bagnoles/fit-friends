@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { SortDirection } from '../../../types/sort-direction.enum';
 import { WORKOUT_TYPES_NAME, WorkoutType } from '../../../types/workout-type.enum';
-import FilterCheckbox from './filter-checkbox';
+import FilterCheckbox from '../../../components/filter-checkbox/filter-checkbox';
 import { AppRoutes } from '../../../const';
 import { useAppSelector } from '../../../store/hooks';
 import { getUserInfo } from '../../../store/user/user-selectors';

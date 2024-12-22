@@ -6,7 +6,7 @@ import { store } from './store';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { checkAuthorization, fetchWorkouts, refreshTokens } from './store/api-actions';
+import { checkAuthorization, fetchUsers, fetchWorkouts, refreshTokens } from './store/api-actions';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,6 +20,7 @@ store.dispatch(checkAuthorization()).then((response) => {
     })
   }
 });
+store.dispatch(fetchUsers());
 
 root.render(
   <React.StrictMode>

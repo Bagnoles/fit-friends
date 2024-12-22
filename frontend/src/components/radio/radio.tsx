@@ -11,7 +11,8 @@ function Radio({name, text, currentValue, value, onChange}: RadioProps):JSX.Elem
     <div className="custom-toggle-radio__block">
       <label>
         <input type="radio" name={name} value={value} checked={value === currentValue} onChange={onChange} />
-        <span className="custom-toggle-radio__icon"></span><span className="custom-toggle-radio__label">{text}</span>
+        <span className="custom-toggle-radio__icon"></span>
+        <span className="custom-toggle-radio__label">{text}</span>
       </label>
     </div>
   );
