@@ -6,6 +6,7 @@ import { WorkoutType } from './workout-type.enum';
 
 export type Workout = {
   id: string;
+  coachId: string;
   name: string;
   imageUrl: string;
   level: Level;

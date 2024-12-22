@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom';
 import { Role } from '../../types/role.enum';
 import { LOCATION_NAMES } from '../../types/subway.enum';
 import { UserInfo } from '../../types/user.type';
 import { WORKOUT_TYPES_NAME } from '../../types/workout-type.enum';
+import { AppRoutes } from '../../const';
 
 type UserCardProps = {
   user: UserInfo;
@@ -11,7 +13,7 @@ type UserCardProps = {
 }
 
 function UserCard({user, className, isSliderCard, isPremium}: UserCardProps):JSX.Element {
-  const { role, avatarUrl, name, subway, interview, coachInterview } = user;
+  const { role, avatarUrl, name, subway, interview, coachInterview, id } = user;
   const interviewInfo = interview ?? coachInterview;
   const classNameForWrapper = isSliderCard ? 'thumbnail-user thumbnail-user--role-user thumbnail-user--dark' : role === Role.Coach ? 'thumbnail-user thumbnail-user--role-coach' : 'thumbnail-user thumbnail-user--role-user';
   const classNameForBtn = 'btn btn--medium thumbnail-user__button ' + (role === Role.Coach && ' btn--dark-bg ') + (isSliderCard && ' btn--outlined btn--dark-bg ');
@@ -47,7 +49,7 @@ function UserCard({user, className, isSliderCard, isPremium}: UserCardProps):JSX
             </li>
           ))}
         </ul>
-        <a className={classNameForBtn} href="#">Подробнее</a>
+        <Link className={classNameForBtn} to={`${AppRoutes.Users}/${id}`}>Подробнее</Link>
       </div>
     </li>
   );
