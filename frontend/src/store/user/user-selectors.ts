@@ -10,3 +10,7 @@ export const getRegisterErrorStatus = (state: Pick<State, NameSpace.User>): bool
 export const getAllUsers = (state: Pick<State, NameSpace.User>): UserInfo[] => state[NameSpace.User].users.data;
 export const getUsersErrorStatus = (state: Pick<State, NameSpace.User>): boolean => state[NameSpace.User].users.isError;
 export const getUsersLoadingStatus = (state: Pick<State, NameSpace.User>): boolean => state[NameSpace.User].users.isLoading;
+
+export const getAllFriends = (state: Pick<State, NameSpace.User>): UserInfo[] => state[NameSpace.User].friends.data;
+export const getFriendsErrorStatus = (state: Pick<State, NameSpace.User>): boolean => state[NameSpace.User].friends.isError;
+export const getFriendsLoadingStatus = (state: Pick<State, NameSpace.User>): boolean => state[NameSpace.User].friends.isLoading;

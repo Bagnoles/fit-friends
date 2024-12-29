@@ -34,6 +34,8 @@ model User {
   avatarId        String?    @map("avatar_id")
   role            Role      
   workouts        Workout[] 
+  Friends1        Friends[] @relation(name: "first")
+  Friends2        Friends[] @relation(name: "second")
 
   @@map("users")
 }
@@ -201,4 +203,13 @@ model File {
   createdAt       DateTime  @default(now()) @map("created_at")
 
   @@map("files")
+}
+
+model Friends {
+  firstId       String    @map("first_id")
+  secondId      String    @map("second_id")
+  user1         User      @relation(fields: [firstId], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "first")
+  user2         User      @relation(fields: [secondId], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "second")
+
+  @@id([firstId, secondId])
 }

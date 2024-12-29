@@ -9,7 +9,8 @@ export const AppRoutes = {
   Balance: '/balance',
   Create: '/create',
   Order: '/orders',
-  Users: '/users'
+  Users: '/users',
+  Friends: '/friends'
 } as const;
 
 export enum AuthorizationStatus {
@@ -33,6 +34,7 @@ export enum APIRoute {
   Review = '/reviews',
   Order = '/orders',
   Balance = '/balance',
+  Friend = '/friends'
 }
 
 export const DEFAULT_PAGE_LIMIT = 6;

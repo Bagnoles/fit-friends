@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../const';
 
 type HeaderProps = {
-  activePage: 'main' | 'profile';
+  activePage: 'main' | 'profile' | 'friends';
 }
 
 function Header({activePage}: HeaderProps):JSX.Element {
@@ -22,10 +22,10 @@ function Header({activePage}: HeaderProps):JSX.Element {
                 <svg width="16" height="18" aria-hidden="true">
                   <use xlinkHref="#icon-user"></use>
                 </svg></Link></li>
-            <li className="main-nav__item"><a className="main-nav__link" href="#" aria-label="Друзья">
+            <li className="main-nav__item"><Link className={activePage === 'friends' ? 'main-nav__link is-active' : 'main-nav__link'} to={AppRoutes.Friends} aria-label="Друзья">
                 <svg width="22" height="16" aria-hidden="true">
                   <use xlinkHref="#icon-friends"></use>
-                </svg></a></li>
+                </svg></Link></li>
             <li className="main-nav__item main-nav__item--notifications"><a className="main-nav__link" href="#" aria-label="Уведомления">
                 <svg width="14" height="18" aria-hidden="true">
                   <use xlinkHref="#icon-notification"></use>

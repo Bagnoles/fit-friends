@@ -26,12 +26,12 @@ function CustomerPart({interview, isEdit}: CustomerPartProps):JSX.Element {
           </div>
         </form>
       </div>
-        <div className="personal-account-user__additional-info"><a className="thumbnail-link thumbnail-link--theme-light" href="#">
+        <div className="personal-account-user__additional-info"><Link className="thumbnail-link thumbnail-link--theme-light" to={AppRoutes.Friends}>
           <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
             <svg width="30" height="26" aria-hidden="true">
               <use xlinkHref="#icon-friends"></use>
             </svg>
-          </div><span className="thumbnail-link__text">Мои друзья</span></a><Link className="thumbnail-link thumbnail-link--theme-light" to={AppRoutes.Balance}>
+          </div><span className="thumbnail-link__text">Мои друзья</span></Link><Link className="thumbnail-link thumbnail-link--theme-light" to={AppRoutes.Balance}>
           <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
             <svg width="30" height="26" aria-hidden="true">
               <use xlinkHref="#icon-shopping-cart"></use>

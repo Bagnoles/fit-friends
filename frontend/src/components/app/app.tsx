@@ -15,6 +15,7 @@ import CreateWorkout from '../../pages/create-workout/create-workout';
 import Order from '../../pages/order/order';
 import Users from '../../pages/users/users';
 import UserInfoCard from '../../pages/user-info-card/user-info-card';
+import Friends from '../../pages/friends/friends';
 
 function App():JSX.Element {
   return (
@@ -32,6 +33,7 @@ function App():JSX.Element {
       <Route path={AppRoutes.Create} element={<PrivateRoute><CreateWorkout /></PrivateRoute>} />
       <Route path={AppRoutes.Users} element={<PrivateRoute><Users /></PrivateRoute>} />
       <Route path={`${AppRoutes.Users}/:id`} element={<PrivateRoute><UserInfoCard /></PrivateRoute>} />
+      <Route path={AppRoutes.Friends} element={<PrivateRoute><Friends /></PrivateRoute>} />
       <Route path='*' element={<NotFound />} />
     </Routes>
   )

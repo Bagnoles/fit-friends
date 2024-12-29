@@ -172,3 +172,27 @@ export const fetchUsers = createAppAsyncThunk<UserInfo[], undefined>('users/getA
     return data;
   }
 );
+
+export const fetchFriends = createAppAsyncThunk<UserInfo[], undefined>('friends/getAll',
+  async (_arg, {extra: api}) => {
+    const {data} = await api.get<UserInfo[]>(APIRoute.Friend);
+    console.log(data);
+    return data;
+  }
+);
+
+export const addFriend = createAppAsyncThunk<UserInfo, {friendId: string}>('friends/add',
+  async (dto, {extra: api}) => {
+    const {data} = await api.post<UserInfo>(APIRoute.Friend, dto);
+    console.log(data);
+    return data;
+  }
+);
+
+export const deleteFriend = createAppAsyncThunk<UserInfo, {friendId: string}>('friends/delete',
+  async (dto, {extra: api}) => {
+    const {data} = await api.post<UserInfo>(`${APIRoute.Friend}/delete`, dto);
+    console.log(data);
+    return data;
+  }
+);

@@ -1,17 +1,38 @@
-import { useAppSelector } from '../../../store/hooks';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { getWorkouts } from '../../../store/workout/workout-selectors';
 import { LOCATION_NAMES } from '../../../types/subway.enum';
 import { UserInfo } from '../../../types/user.type';
 import { WORKOUT_TYPES_NAME } from '../../../types/workout-type.enum';
 import WorkoutsBlock from './workouts-block';
+import { getAllFriends } from '../../../store/user/user-selectors';
+import { addFriend, deleteFriend } from '../../../store/api-actions';
+import { AppRoutes } from '../../../const';
 
 type CoachContentProps = {
   userInfo: UserInfo;
 }
 
 function CoachContent({userInfo}: CoachContentProps):JSX.Element {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { id, name, subway, description, coachInterview } = userInfo;
+  const isFriend = Boolean(useAppSelector(getAllFriends).find((item) => item.id === id));
   const workouts = useAppSelector(getWorkouts).filter((item) => item.coachId === id);
+
+  const handleFriendButtonClick = () => {
+    if (isFriend) {
+      dispatch(deleteFriend({
+        friendId: id
+      }));
+    } else {
+      dispatch(addFriend({
+        friendId: id
+      }));
+    }
+    navigate(AppRoutes.Friends);
+  }
+
   return (
     <>
       <div className="user-card-coach__card">
@@ -45,7 +66,7 @@ function CoachContent({userInfo}: CoachContentProps):JSX.Element {
               <div className="hashtag"><span>#{WORKOUT_TYPES_NAME[item].toLowerCase()}</span></div>
             </li>)}
           </ul>
-          <button className="btn user-card-coach__btn" type="button">Добавить в друзья</button>
+          <button className="btn user-card-coach__btn" type="button" onClick={handleFriendButtonClick}>{isFriend ? 'Удалить из друзей' : 'Добавить в друзья'}</button>
         </div>
         <div className="user-card-coach__gallary">
           <ul className="user-card-coach__gallary-list">

@@ -12,12 +12,14 @@ import { InterviewModule } from './interview/interview.module';
 import fileConfig from './shared/config/file.config';
 import { FileUploaderModule } from './file-uploader/file-uploader.module';
 import { CoachInterviewModule } from './coach-interview/coach-interview.module';
+import { FriendsModule } from './friends/friends.module';
 
 @Module({
   imports: [
     AuthModule,
     WorkoutModule,
     UserModule,
+    FriendsModule,
     BalanceModule,
     ReviewModule,
     OrderModule,

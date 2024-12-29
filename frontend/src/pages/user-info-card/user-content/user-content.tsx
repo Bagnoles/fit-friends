@@ -1,14 +1,36 @@
+import { useNavigate } from 'react-router-dom';
+import { addFriend, deleteFriend } from '../../../store/api-actions';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { getAllFriends } from '../../../store/user/user-selectors';
 import { LEVEL_NAMES } from '../../../types/level.enum';
 import { LOCATION_NAMES } from '../../../types/subway.enum';
 import { UserInfo } from '../../../types/user.type';
 import { WORKOUT_TYPES_NAME } from '../../../types/workout-type.enum';
+import { AppRoutes } from '../../../const';
 
 type UserContentProps = {
   userInfo: UserInfo;
 }
 
 function UserContent({userInfo}: UserContentProps):JSX.Element {
-  const { name, interview, description, subway } = userInfo;
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { name, interview, description, subway, id } = userInfo;
+  const isFriend = Boolean(useAppSelector(getAllFriends).find((item) => item.id === id));
+
+  const handleFriendButtonClick = () => {
+    if (isFriend) {
+      dispatch(deleteFriend({
+        friendId: id
+      }));
+    } else {
+      dispatch(addFriend({
+        friendId: id
+      }));
+    }
+    navigate(AppRoutes.Friends);
+  }
+
   return (
     <>
       <div className="user-card__content">
@@ -32,7 +54,8 @@ function UserContent({userInfo}: UserContentProps):JSX.Element {
             <div className="hashtag"><span>#{LEVEL_NAMES[interview.level].toLowerCase()}</span></div>
           </li>}
         </ul>
-        <button className="btn user-card__btn" type="button">Добавить в друзья</button>
+
+        <button className="btn user-card__btn" type="button" onClick={handleFriendButtonClick}>{isFriend ? 'Удалить из друзей' : 'Добавить в друзья'}</button>
       </div>
       <div className="user-card__gallary">
         <ul className="user-card__gallary-list">
